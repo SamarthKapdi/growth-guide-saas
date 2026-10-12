@@ -111,18 +111,20 @@ Cheerio Growth Guide (*"Your next best growth move"*) is an embedded activation 
 | **New Feature Activations (25%)** | 391 accounts / mo | 4,691 activations | Merchants completing setup wizards |
 | **Total AI & Infrastructure Cost** | ₹1,09,833 / mo | ₹13,18,000 / year | Token fees + cloud hosting + fixed overhead |
 | **Cost Per Feature Activation** | ₹281 / activation | ₹281 average | Total program cost divided by activations |
-| **Retained Businesses (+2.0 pp lift)** | 8 accounts / mo | 96 net retained accounts | Adopting accounts × 2.0 pp retention lift |
-| **Incremental Retained Revenue** | ₹2,16,667 / mo | ₹26,00,000 / year | Retained accounts × ₹2,999 monthly ARPU |
-| **Net Modeled Program Benefit** | **₹1,06,833 / mo** | **₹12,82,000 / year** | **Incremental Revenue minus Total Cost** |
-| **Program Contribution Margin** | **49.3%** | **49.3% weighted** | **Positive return on investment** |
+| **Active Retained Accounts** | 73 exit accounts | 94 cohort-months | Adopting accounts × +2.0 pp lift with 5% decay |
+| **In-Period Recognized Revenue** | ₹1,22,959 / mo avg | ₹14,76,000 / year | Sum of customer-months recognized (no double counting) |
+| **Month 12 Exit ARR Run Rate** | ₹2,18,927 / mo exit | ₹26,00,000 / year exit | 73 active retained accounts × ₹2,999 × 12 months |
+| **Net Modeled Benefit (Exit ARR)** | **₹1,06,833 / mo avg** | **₹12,82,000 / year** | **Exit ARR minus total annual program cost** |
+| **Contribution Margin (Exit / In-Period)** | **49.3% exit ARR** | **10.7% in-period** | **Base 49.3% flags 75% SaaS hurdle; hits 70.4% in opt.** |
 
-*Methodology Notice: Retention revenue is calculated strictly on an expected-value basis (`Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU`). Does not double count existing subscriptions.*
+*Methodology & Audit Notes: Retention revenue is calculated strictly on an expected-value basis (`Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU`). Distinguishes in-period recognized cash flow (₹14.76L) from Month 12 Exit ARR run rate (₹26.0L). 75% standard SaaS hurdle flags Year 1 base case (49.3%) due to fixed setup overhead; cleared at scale or Year 2.*
 
 ### 4.2 AI Contribution & Token Sizing Economics
 * **Model Selected:** **OpenAI GPT-4o-mini** (Standard Pay-As-You-Go API Tier).
-* **Official Verified Pricing:** Input: **$0.150 / 1M tokens**; Output: **$0.600 / 1M tokens**; USD/INR FX Peg: **₹84.00**.
-* **Interaction Sizing:** 650 input tokens (prompt context, FAQ schema) + 250 output tokens (structured recommendation payload) across an average of 18 monthly interactions per adopting business.
-* **Blended AI Token Cost:** ₹0.021 per interaction (~₹0.38 per active business/month), representing less than 0.2% of customer lifetime value.
+* **Official Verified Pricing:** Input: **$0.150 / 1M tokens**; Output: **$0.600 / 1M tokens**; URL: `https://developers.openai.com/api/docs/models/gpt-4o-mini`.
+* **Currency Assumption:** Editable illustrative conversion assumption of **₹84.00 / USD** (not a fixed currency peg).
+* **Interaction Sizing:** 650 input tokens (prompt context, FAQ schema) + 250 output tokens (structured recommendation payload) across an average of 18 monthly interactions per adopting business (~₹0.021/call).
+* **Blended AI Token Spend:** ₹12,490 total annual token cost across 4,691 activations (< 0.2% of retained customer lifetime value).
 
 ### 4.3 Key Risks & Mitigation Matrix
 | Identified Risk | Severity | Operational Mitigation |

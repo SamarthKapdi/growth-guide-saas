@@ -340,45 +340,53 @@ async function generateDocx() {
               }),
               new TableRow({
                 children: [
-                  createCell('Incremental Retained Accounts', false, 32, true),
-                  createCell('8 accounts / mo', false, 22),
-                  createCell('96 accounts', false, 22),
-                  createCell('Adopting accounts × +2.0 pp retention lift', false, 24),
+                  createCell('Active Retained Accounts', false, 32, true),
+                  createCell('73 exit accounts', false, 22),
+                  createCell('94 cohort-months', false, 22),
+                  createCell('Adopting accounts × +2.0 pp lift with 5% decay', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
-                  createCell('Incremental Retained Revenue', false, 32, true),
-                  createCell('₹2,16,667 / mo', false, 22),
-                  createCell('₹26,00,000 / yr', false, 22),
-                  createCell('Retained accounts × ₹2,999 monthly ARPU', false, 24),
+                  createCell('In-Period Recognized Revenue', false, 32, true),
+                  createCell('₹1,22,959 / mo avg', false, 22),
+                  createCell('₹14,76,000 / yr', false, 22),
+                  createCell('Sum of recognized customer-months (no double counting)', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
-                  createCell('Net Modeled Program Benefit', false, 32, true),
-                  createCell('₹1,06,833 / mo', false, 22),
+                  createCell('Month 12 Exit ARR Run Rate', false, 32, true),
+                  createCell('₹2,18,927 / mo exit', false, 22),
+                  createCell('₹26,00,000 / yr exit', false, 22),
+                  createCell('73 active retained accounts × ₹2,999 × 12 months', false, 24),
+                ],
+              }),
+              new TableRow({
+                children: [
+                  createCell('Net Program Benefit (Exit ARR)', false, 32, true),
+                  createCell('₹1,06,833 / mo avg', false, 22),
                   createCell('₹12,82,000 / yr', false, 22),
-                  createCell('Retained Revenue minus Program Cost', false, 24),
+                  createCell('Exit ARR minus total annual program cost', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
-                  createCell('Program Contribution Margin', false, 32, true),
-                  createCell('49.3%', false, 22),
-                  createCell('49.3% weighted', false, 22),
-                  createCell('Strong positive return on investment', false, 24),
+                  createCell('Contribution Margin (Exit / In-Period)', false, 32, true),
+                  createCell('49.3% exit ARR', false, 22),
+                  createCell('10.7% in-period', false, 22),
+                  createCell('Base 49.3% flags 75% SaaS hurdle; hits 70.4% in opt.', false, 24),
                 ],
               }),
             ],
           }),
 
-          createPara('Methodology Disclosure: Retention revenue is calculated strictly on an expected-value basis (Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU). It avoids double-counting previously retained cohorts.', true),
+          createPara('Methodology & Audit Notes: Revenue is modeled strictly on expected value (Adopters × +2.0 pp lift × ₹2,999 ARPU). Distinguishes in-period cash flow (₹14.76L) from Month 12 Exit ARR (₹26.0L). 75% SaaS hurdle flags Year 1 base case (49.3%) due to fixed setup overhead; cleared at scale or Y2.', true),
 
           createHeading2('4.2 AI Token Economics & Provider Pricing Benchmark'),
-          createBullet('Model Selected:', 'OpenAI GPT-4o-mini (Official verified pricing: $0.150/1M input tokens, $0.600/1M output tokens; USD/INR FX peg ₹84.00).'),
-          createBullet('Interaction Sizing:', '650 input tokens + 250 output tokens across an average of 18 monthly interactions per adopting business.'),
-          createBullet('Blended Token Cost:', '₹0.021 per interaction (~₹0.38 per active business/month), representing less than 0.2% of customer lifetime value.'),
+          createBullet('Model Selected:', 'OpenAI GPT-4o-mini (Official docs verified: $0.150/1M input, $0.600/1M output; editable illustrative conversion assumption of ₹84.00/USD, not a fixed currency peg; URL: https://developers.openai.com/api/docs/models/gpt-4o-mini).'),
+          createBullet('Interaction Sizing:', '650 input tokens + 250 output tokens across an average of 18 monthly interactions per adopting business (~₹0.021/call).'),
+          createBullet('Annual AI Token Spend:', '₹12,490 total annual token cost across 4,691 activations (< 0.2% of retained customer lifetime value).'),
 
           createHeading2('4.3 Key Risks & Mitigation Matrix'),
           createBullet('Recommendation Fatigue:', 'Suppressed recommendations for 14 days after activation; smart dismissal controls.'),

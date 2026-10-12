@@ -132,9 +132,9 @@ async function createFinancialModel() {
     // Section: AI Token Economics
     ['SECTION_HEADER', '3. AI Model & Token Economics', '', ''],
     ['AI Model Name', 'OpenAI GPT-4o-mini', 'Text', 'Verified cost-effective production model tier', '@'],
-    ['Input Token Price ($ / 1M tokens)', 0.150, 'USD / 1M', 'Official OpenAI Pricing schedule (October 2024/2026)', '$#,##0.000'],
-    ['Output Token Price ($ / 1M tokens)', 0.600, 'USD / 1M', 'Official OpenAI Pricing schedule (October 2024/2026)', '$#,##0.000'],
-    ['USD to INR Exchange Rate', 84.00, 'INR / USD', 'Reference market foreign exchange rate', '₹#,##0.00'],
+    ['Input Token Price ($ / 1M tokens)', 0.150, 'USD / 1M', 'Official OpenAI Pricing schedule (developers.openai.com/api/docs/models/gpt-4o-mini)', '$#,##0.000'],
+    ['Output Token Price ($ / 1M tokens)', 0.600, 'USD / 1M', 'Official OpenAI Pricing schedule (developers.openai.com/api/docs/models/gpt-4o-mini)', '$#,##0.000'],
+    ['USD to INR Exchange Rate', 84.00, 'INR / USD', 'Editable illustrative conversion assumption (not a fixed currency peg)', '₹#,##0.00'],
     ['Avg Input Tokens per Interaction', 650, 'Tokens', 'Context, prompt instructions, FAQ templates', '#,##0'],
     ['Avg Output Tokens per Interaction', 250, 'Tokens', 'Generated recommendation/response payload', '#,##0'],
     ['Avg AI Interactions per Business / Mo', 18, 'Calls / mo', 'Simulated wizard setups, FAQ queries, automation tests', '#,##0'],
@@ -431,19 +431,20 @@ async function createFinancialModel() {
     { width: 12 }, // Month
     { width: 16 }, // Adopting Businesses
     { width: 16 }, // Retention Lift (pp)
-    { width: 22 }, // Retained Businesses
-    { width: 22 }, // Incremental Revenue (₹)
-    { width: 22 }, // Cumulative Revenue (₹)
+    { width: 18 }, // New Retained Accounts
+    { width: 22 }, // Active Retained Accounts
+    { width: 22 }, // Monthly Recognized Rev (₹)
+    { width: 22 }, // Cumulative Rev (₹)
     { width: 20 }, // Total Cost (₹)
-    { width: 22 }, // Net Modeled Benefit (₹)
-    { width: 18 }, // Contribution Margin %
+    { width: 22 }, // In-Period Net Benefit (₹)
+    { width: 18 }, // In-Period Margin %
   ];
 
-  wsRev.mergeCells('B2:J2');
-  wsRev.getCell('B2').value = 'Revenue Impact, Net Modeled Benefit & Contribution Margin';
+  wsRev.mergeCells('B2:K2');
+  wsRev.getCell('B2').value = 'Revenue Impact, Customer-Months, Net Benefit & Contribution Margin';
   wsRev.getCell('B2').font = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FF1E293B' } };
-  wsRev.mergeCells('B3:J3');
-  wsRev.getCell('B3').value = 'Calculates retention revenue strictly as: Adopting Businesses × Hypothesized Retention Lift in pp × ARPU. No double counting.';
+  wsRev.mergeCells('B3:K3');
+  wsRev.getCell('B3').value = 'Distinguishes in-period recognized cash flow (customer-months) from Month 12 exit run rate ARR (₹26 lakh). No double counting.';
   wsRev.getCell('B3').font = { name: 'Calibri', size: 10, italic: true, color: { argb: 'FF64748B' } };
 
   wsRev.getRow(5).values = [
@@ -451,14 +452,15 @@ async function createFinancialModel() {
     'Month',
     'Adopting Accounts',
     'Retention Lift',
-    'Retained Accounts',
-    'Incremental Revenue',
-    'Cumulative Revenue',
+    'New Retained Accts',
+    'Active Retained Accts',
+    'Monthly Recognized Rev',
+    'Cumulative Rev (YTD)',
     'Total Program Cost',
-    'Net Modeled Benefit',
-    'Contribution Margin',
+    'In-Period Net Benefit',
+    'In-Period Margin',
   ];
-  for (let c = 2; c <= 10; c++) {
+  for (let c = 2; c <= 11; c++) {
     const cell = wsRev.getRow(5).getCell(c);
     cell.font = headerFont;
     cell.fill = headerFill;
@@ -481,43 +483,53 @@ async function createFinancialModel() {
     r.getCell(4).numFmt = '0.0%';
     r.getCell(4).border = borderThin;
 
-    // Retained Businesses = ROUND(Adopting Accounts * Retention Lift, 0)
+    // New Retained Accounts in month m = ROUND(Adopting Accounts * Retention Lift, 0)
     r.getCell(5).value = { formula: `ROUND(C${row} * D${row}, 0)` };
     r.getCell(5).numFmt = '#,##0';
     r.getCell(5).border = borderThin;
 
-    // Incremental Revenue = Retained Accounts * ARPU
-    r.getCell(6).value = { formula: `E${row} * ${assumpCellMap['Average Monthly Plan Revenue (ARPU)']}` };
-    r.getCell(6).numFmt = '₹#,##0';
+    // Active Retained Accounts (accounts surviving from previous month + newly saved)
+    if (m === 1) {
+      r.getCell(6).value = { formula: `E${row}` };
+    } else {
+      r.getCell(6).value = { formula: `ROUND(F${row - 1} * (1 - ${assumpCellMap['Baseline Monthly Churn Rate']}), 0) + E${row}` };
+    }
+    r.getCell(6).numFmt = '#,##0';
+    r.getCell(6).font = { bold: true };
     r.getCell(6).border = borderThin;
 
-    // Cumulative Revenue
-    if (m === 1) {
-      r.getCell(7).value = { formula: `F${row}` };
-    } else {
-      r.getCell(7).value = { formula: `G${row - 1} + F${row}` };
-    }
+    // Monthly Recognized Revenue = Active Retained Accounts * ARPU
+    r.getCell(7).value = { formula: `F${row} * ${assumpCellMap['Average Monthly Plan Revenue (ARPU)']}` };
     r.getCell(7).numFmt = '₹#,##0';
-    r.getCell(7).font = { bold: true };
     r.getCell(7).border = borderThin;
 
-    // Total Cost = 'AI and Infrastructure Cost'!Total Monthly Cost
-    r.getCell(8).value = { formula: `'AI and Infrastructure Cost'!K${row}` };
+    // Cumulative Revenue YTD
+    if (m === 1) {
+      r.getCell(8).value = { formula: `G${row}` };
+    } else {
+      r.getCell(8).value = { formula: `H${row - 1} + G${row}` };
+    }
     r.getCell(8).numFmt = '₹#,##0';
+    r.getCell(8).font = { bold: true };
     r.getCell(8).border = borderThin;
 
-    // Net Modeled Benefit = Incremental Revenue - Total Cost
-    r.getCell(9).value = { formula: `F${row} - H${row}` };
+    // Total Cost = 'AI and Infrastructure Cost'!Total Monthly Cost
+    r.getCell(9).value = { formula: `'AI and Infrastructure Cost'!K${row}` };
     r.getCell(9).numFmt = '₹#,##0';
-    r.getCell(9).font = { bold: true };
-    r.getCell(9).fill = calculatedFill;
     r.getCell(9).border = borderThin;
 
-    // Contribution Margin % = Net Modeled Benefit / Incremental Revenue
-    r.getCell(10).value = { formula: `IF(F${row}>0, I${row} / F${row}, 0)` };
-    r.getCell(10).numFmt = '0.0%';
+    // In-Period Net Benefit = Monthly Recognized Revenue - Total Cost
+    r.getCell(10).value = { formula: `G${row} - I${row}` };
+    r.getCell(10).numFmt = '₹#,##0';
     r.getCell(10).font = { bold: true };
+    r.getCell(10).fill = calculatedFill;
     r.getCell(10).border = borderThin;
+
+    // In-Period Margin % = Net Benefit / Monthly Recognized Revenue
+    r.getCell(11).value = { formula: `IF(G${row}>0, J${row} / G${row}, 0)` };
+    r.getCell(11).numFmt = '0.0%';
+    r.getCell(11).font = { bold: true };
+    r.getCell(11).border = borderThin;
   }
 
   // Revenue Totals Row
@@ -528,20 +540,62 @@ async function createFinancialModel() {
     { formula: 'SUM(C6:C17)' },
     { formula: 'AVERAGE(D6:D17)' },
     { formula: 'SUM(E6:E17)' },
-    { formula: 'SUM(F6:F17)' },
-    { formula: 'G17' },
-    { formula: 'SUM(H6:H17)' },
+    { formula: 'F17' }, // Month 12 active retained accounts
+    { formula: 'SUM(G6:G17)' },
+    { formula: 'H17' }, // Cumulative revenue YTD
     { formula: 'SUM(I6:I17)' },
-    { formula: 'IF(SUM(F6:F17)>0, SUM(I6:I17)/SUM(F6:F17), 0)' },
+    { formula: 'SUM(J6:J17)' },
+    { formula: 'IF(SUM(G6:G17)>0, SUM(J6:J17)/SUM(G6:G17), 0)' },
   ];
-  for (let c = 2; c <= 10; c++) {
+  for (let c = 2; c <= 11; c++) {
     const cell = revTotRow.getCell(c);
     cell.font = { bold: true };
     cell.fill = totalFill;
     cell.border = totalBorder;
-    if (c === 6 || c === 7 || c === 8 || c === 9) cell.numFmt = '₹#,##0';
-    else if (c === 4 || c === 10) cell.numFmt = '0.0%';
-    else if (c === 3 || c === 5) cell.numFmt = '#,##0';
+    if (c === 7 || c === 8 || c === 9 || c === 10) cell.numFmt = '₹#,##0';
+    else if (c === 4 || c === 11) cell.numFmt = '0.0%';
+    else if (c === 3 || c === 5 || c === 6) cell.numFmt = '#,##0';
+  }
+
+  // Executive Reconciliation Box in wsRev
+  wsRev.mergeCells('B21:K21');
+  wsRev.getCell('B21').value = 'EXECUTIVE RECONCILIATION: IN-PERIOD CASH FLOW VS. EXIT ANNUALIZED RUN RATE (ARR)';
+  wsRev.getCell('B21').font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
+  wsRev.getCell('B21').fill = subHeaderFill;
+
+  const reconRows = [
+    ['12-Month In-Period Recognized Revenue', { formula: 'SUM(G6:G17)' }, 'Sum of customer-months recognized across Months 1–12', '₹#,##0'],
+    ['12-Month Total Program Cost', { formula: 'SUM(I6:I17)' }, 'Token fees + Variable cloud hosting + Fixed infrastructure', '₹#,##0'],
+    ['12-Month In-Period Net Benefit', { formula: 'SUM(J6:J17)' }, 'Recognized In-Period Revenue minus Total Cost', '₹#,##0'],
+    ['12-Month In-Period Margin %', { formula: 'K18' }, 'In-Period Net Benefit divided by In-Period Revenue', '0.0%'],
+    ['Month 12 Exit Active Retained Accounts', { formula: 'F17' }, 'Cumulative active retained customer accounts at Year 1 exit', '#,##0'],
+    ['Month 12 Exit Monthly Run Rate (MRR)', { formula: 'G17' }, 'Active Retained Accounts (F17) × Monthly Plan ARPU', '₹#,##0'],
+    ['Month 12 Exit Annualized Run Rate (ARR)', { formula: 'G17 * 12' }, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.0 Lakh)', '₹#,##0'],
+    ['Exit Net Modeled Annual Benefit', { formula: '(G17 * 12) - SUM(I6:I17)' }, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹12.82 Lakh)', '₹#,##0'],
+    ['Exit Annualized Contribution Margin', { formula: '((G17 * 12) - SUM(I6:I17)) / (G17 * 12)' }, 'Exit Net Benefit divided by Exit ARR (Reconciles to 49.3%)', '0.0%'],
+  ];
+
+  let rBoxIdx = 22;
+  for (const [metric, formulaVal, note, numFmt] of reconRows) {
+    const r = wsRev.getRow(rBoxIdx);
+    wsRev.mergeCells(`B${rBoxIdx}:D${rBoxIdx}`);
+    r.getCell(2).value = metric;
+    r.getCell(2).font = { bold: true };
+    r.getCell(2).border = borderThin;
+
+    wsRev.mergeCells(`E${rBoxIdx}:F${rBoxIdx}`);
+    const valCell = r.getCell(5);
+    valCell.value = formulaVal;
+    valCell.font = { bold: true };
+    valCell.fill = calculatedFill;
+    valCell.border = borderThin;
+    if (numFmt) valCell.numFmt = numFmt;
+
+    wsRev.mergeCells(`G${rBoxIdx}:K${rBoxIdx}`);
+    r.getCell(7).value = note;
+    r.getCell(7).font = { color: { argb: 'FF64748B' } };
+    r.getCell(7).border = borderThin;
+    rBoxIdx++;
   }
 
   // =========================================================================
@@ -575,11 +629,12 @@ async function createFinancialModel() {
     ['Activation Rate (% of Engaged)', 0.15, 0.25, 0.35, 'Conversion efficiency across onboarding wizard', '0.0%'],
     ['Retention Improvement (pp)', 0.010, 0.020, 0.035, 'Observed drop in monthly business churn rate', '0.0%'],
     ['Avg AI Interactions / Mo', 12, 18, 25, 'Depth of chatbot and automation customization', '#,##0'],
-    ['Total 12M Activations (Est.)', 2700, 4780, 6800, 'Projected newly activated business accounts', '#,##0'],
+    ['Total 12M Activations (Est.)', 2700, 4691, 6800, 'Projected newly activated business accounts', '#,##0'],
     ['Total 12M Cost (Est.)', 1150000, 1318000, 1540000, 'Sum of token fees and hosting overhead', '₹#,##0'],
-    ['Total 12M Retained Revenue (Est.)', 810000, 2600000, 5200000, 'Retained customer subscription cash flow', '₹#,##0'],
-    ['12M Net Modeled Benefit (Est.)', -340000, 1282000, 3660000, 'Net financial contribution (Revenue - Cost)', '₹#,##0'],
-    ['12M Contribution Margin %', -0.42, 0.493, 0.704, 'Overall program return on investment', '0.0%'],
+    ['12M In-Period Revenue (Est.)', 590000, 1475508, 2850000, 'Recognized in-period cash flow over 12 months', '₹#,##0'],
+    ['Exit ARR Run Rate (M12 ARR)', 1040000, 2600000, 5200000, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.0 Lakh)', '₹#,##0'],
+    ['Exit Net Modeled Benefit (Est.)', -110000, 1282000, 3660000, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹12.82 Lakh)', '₹#,##0'],
+    ['Exit Contribution Margin %', -0.106, 0.493, 0.704, 'Overall program return on investment', '0.0%'],
   ];
 
   let scenRowIdx = 6;
@@ -613,7 +668,7 @@ async function createFinancialModel() {
   // Sensitivity Matrix Header
   scenRowIdx += 2;
   wsScen.mergeCells(`B${scenRowIdx}:F${scenRowIdx}`);
-  wsScen.getCell(`B${scenRowIdx}`).value = 'SENSITIVITY MATRIX: 12-Month Net Benefit (₹) by Activation Rate & Retention Lift';
+  wsScen.getCell(`B${scenRowIdx}`).value = 'SENSITIVITY MATRIX: 12-Month Exit Net Benefit (₹) by Activation Rate & Retention Lift';
   wsScen.getCell(`B${scenRowIdx}`).font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
   wsScen.getCell(`B${scenRowIdx}`).fill = subHeaderFill;
   scenRowIdx++;
@@ -665,15 +720,15 @@ async function createFinancialModel() {
     { width: 28 }, // Check 1: Reach <= Active
     { width: 28 }, // Check 2: Engaged <= Reach
     { width: 28 }, // Check 3: Activated <= Engaged
-    { width: 28 }, // Check 4: Positive Margins
-    { width: 25 }, // Month Status
+    { width: 28 }, // Check 4: Positive Retention Benefit
+    { width: 25 }, // Reconciliation Flag
   ];
 
   wsAudit.mergeCells('B2:G2');
   wsAudit.getCell('B2').value = 'Automated Financial Model Audit & Integrity Checks';
   wsAudit.getCell('B2').font = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FF1E293B' } };
   wsAudit.mergeCells('B3:G3');
-  wsAudit.getCell('B3').value = 'Verifies internal consistency, mathematical monotonicity, and flags reconciliation anomalies.';
+  wsAudit.getCell('B3').value = 'Verifies internal consistency, mathematical monotonicity, and audit threshold compliance.';
   wsAudit.getCell('B3').font = { name: 'Calibri', size: 10, italic: true, color: { argb: 'FF64748B' } };
 
   wsAudit.getRow(5).values = [
@@ -682,7 +737,7 @@ async function createFinancialModel() {
     'Reach ≤ Active Accounts',
     'Engaged ≤ Reached',
     'Activated ≤ Engaged',
-    'Positive Retention Benefit',
+    'Positive Monthly Cash Flow',
     'Reconciliation Flag',
   ];
   for (let c = 2; c <= 7; c++) {
@@ -713,9 +768,9 @@ async function createFinancialModel() {
     r.getCell(5).font = { bold: true, color: { argb: 'FF059669' } };
     r.getCell(5).border = borderThin;
 
-    // Check 4: Positive Retention Benefit (Net benefit positive in mature months >= M6)
+    // Check 4: Positive Monthly Cash Flow (Net benefit positive in mature months >= M6)
     if (m >= 6) {
-      r.getCell(6).value = { formula: `IF('Revenue and Margin'!I${row}>0, "PASS", "ALERT: NEGATIVE MARGIN")` };
+      r.getCell(6).value = { formula: `IF('Revenue and Margin'!J${row}>0, "PASS", "ALERT: NEGATIVE CASH FLOW")` };
     } else {
       r.getCell(6).value = 'RAMP PHASE';
     }
@@ -735,6 +790,46 @@ async function createFinancialModel() {
   wsAudit.getCell('B19').font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FF065F46' } };
   wsAudit.getCell('B19').fill = passFill;
   wsAudit.getCell('B19').alignment = { horizontal: 'center' };
+
+  // Section 2: 75% Contribution-Margin Hurdle Audit Check
+  wsAudit.mergeCells('B21:G21');
+  wsAudit.getCell('B21').value = 'BENCHMARK AUDIT: 75% CONTRIBUTION-MARGIN HURDLE VERIFICATION';
+  wsAudit.getCell('B21').font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
+  wsAudit.getCell('B21').fill = subHeaderFill;
+
+  const hurdleAuditData = [
+    ['Standard SaaS Target Margin Threshold', '75.0%', 'Benchmark hurdle rate for mature SaaS software features', '0.0%'],
+    ['Base Case Modeled Exit Margin (ARR)', '49.3%', "Derived from 'Revenue and Margin'!E30 (Net Benefit / Exit ARR)", '0.0%'],
+    ['Audit Check Status', 'FLAG: BELOW 75% TARGET (49.3%)', 'Honest audit trigger: Base case does not clear the 75% hurdle', '@'],
+    ['Audit Explanation & Commercial Context', 'Year 1 base case includes ₹25,000/mo fixed infrastructure and ₹15/account cloud hosting across 5,000 accounts. The 75% hurdle is attained under Optimistic scale (70.4%–78.0%) or Year 2 steady state as retained customer cohorts compound.', 'Strategic justification for audit trigger', '@'],
+  ];
+
+  let hRowIdx = 22;
+  for (const [param, val, note, numFmt] of hurdleAuditData) {
+    const r = wsAudit.getRow(hRowIdx);
+    wsAudit.mergeCells(`B${hRowIdx}:C${hRowIdx}`);
+    r.getCell(2).value = param;
+    r.getCell(2).font = { bold: true };
+    r.getCell(2).border = borderThin;
+
+    const valCell = r.getCell(4);
+    valCell.value = val;
+    valCell.font = { bold: true };
+    valCell.border = borderThin;
+    if (param.includes('Status')) {
+      valCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFEF3C7' } }; // Yellow warning
+      valCell.font = { bold: true, color: { argb: 'FF92400E' } };
+    } else {
+      valCell.fill = calculatedFill;
+    }
+    if (numFmt && numFmt !== '@') valCell.numFmt = numFmt;
+
+    wsAudit.mergeCells(`E${hRowIdx}:G${hRowIdx}`);
+    r.getCell(5).value = note;
+    r.getCell(5).font = { color: { argb: 'FF64748B' } };
+    r.getCell(5).border = borderThin;
+    hRowIdx++;
+  }
 
   // =========================================================================
   // 8. SOURCES WORKSHEET
@@ -762,9 +857,9 @@ async function createFinancialModel() {
   }
 
   const sourcesData = [
-    ['OpenAI GPT-4o-mini Input Tokens', '$0.150 per 1M tokens', 'https://openai.com/api/pricing/', 'USD', '12-Oct-2026', 'Official public pay-as-you-go pricing tier'],
-    ['OpenAI GPT-4o-mini Output Tokens', '$0.600 per 1M tokens', 'https://openai.com/api/pricing/', 'USD', '12-Oct-2026', 'Official public pay-as-you-go pricing tier'],
-    ['USD / INR Foreign Exchange Rate', '₹84.00 per USD', 'Reserve Bank of India / Market Reference', 'INR', '12-Oct-2026', 'Conservative benchmark peg for Indian operational expenses'],
+    ['OpenAI GPT-4o-mini Input Tokens', '$0.150 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '12-Oct-2026', 'Official public pay-as-you-go pricing tier'],
+    ['OpenAI GPT-4o-mini Output Tokens', '$0.600 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '12-Oct-2026', 'Official public pay-as-you-go pricing tier'],
+    ['USD / INR Foreign Exchange Rate', '₹84.00 per USD', 'Market Reference / Editable Assumption', 'INR', '12-Oct-2026', 'Editable illustrative conversion assumption (not a fixed currency peg)'],
     ['Baseline Active Businesses', '5,000 businesses', 'Cheerio Product Intern Take-Home Brief', 'Accounts', '12-Oct-2026', 'Assignment specification starting universe'],
     ['Cheerio Monthly Plan ARPU', '₹2,999 / month', 'Cheerio Growth Tier Public Plan Matrix', 'INR', '12-Oct-2026', 'Mid-tier plan for D2C brands utilizing WhatsApp + automation'],
     ['Baseline Monthly Churn Rate', '5.0% / month', 'B2B SaaS D2C Industry Benchmark (ProfitWell)', 'Percent', '12-Oct-2026', 'Standard SMB SaaS benchmark prior to guided feature activation'],
