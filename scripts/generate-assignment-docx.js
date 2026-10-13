@@ -366,15 +366,15 @@ async function generateDocx() {
                 children: [
                   createCell('Annualized M12 Operating Cost', false, 32, true),
                   createCell('₹1,18,418 / mo exit', false, 22),
-                  createCell('₹14,21,016 / yr exit', false, 24),
-                  createCell('Fixed (₹25k) + M12 hosting (₹93k) + AI (₹163) × 12', false, 22),
+                  createCell('₹14,21,013 / yr exit', false, 24),
+                  createCell('Fixed (₹25k) + M12 hosting (₹93k) + AI (₹162.79) × 12', false, 22),
                 ],
               }),
               new TableRow({
                 children: [
                   createCell('Exit Net Annualized Benefit', false, 32, true),
                   createCell('₹1,00,509 / mo net', false, 22),
-                  createCell('₹12,06,108 / yr', false, 22),
+                  createCell('₹12,06,111 / yr', false, 22),
                   createCell('Exit ARR (₹26.27L) minus Annualized M12 Cost (₹14.21L)', false, 24),
                 ],
               }),
@@ -389,17 +389,20 @@ async function generateDocx() {
             ],
           }),
 
-          createPara('Methodology & Hosting Attribution: Retention revenue is modeled on expected value (Adopters × +2.0 pp lift × ₹2,999 ARPU), keeping Year-1 in-period cash flow (₹14.76L recognized, ₹13.08L realized cost, +₹1.68L net, 11.4% margin) distinct from Exit Run-Rate ARR (₹26.27L) and Annualized M12 Cost (₹14.21L; ₹12.06L net, 45.9% margin). Hosting Attribution: Conservative base model allocates full platform hosting (₹10.06L) across all 67,058 account-months, triggering the 75% SaaS hurdle (45.9%). Under incremental feature attribution (~₹4.75L cost), exit margin exceeds 80%. Platform hosting must not be double-counted against WhatsApp messaging P&Ls.', true),
+          createPara('Methodology & Hosting Attribution: Retention revenue is modeled on expected value (Adopters × 2.0% incremental yield × ₹2,999 ARPU with 5% monthly decay), keeping Year-1 in-period cash flow (₹14.76L recognized, ₹13.08L realized cost, +₹1.68L net, 11.4% margin) distinct from Exit Run-Rate ARR (₹26.27L) and Annualized M12 Cost (₹14.21L; ₹12.06L net, 45.9% margin). The 2.0% yield is an illustrative share of newly activated businesses contributing a retained account, not a company-wide churn drop from 5% to 3%. Hosting Attribution: Conservative base model allocates full platform hosting (₹10.06L) across all 67,058 account-months, triggering the 75% SaaS hurdle (45.9%). Under incremental feature attribution (~₹4.75L cost), exit margin exceeds 80%. Platform hosting must not be double-counted against WhatsApp messaging P&Ls.', true),
 
           createHeading2('4.2 AI Token Economics & Provider Pricing Benchmark'),
           createBullet('Model Selected:', 'OpenAI GPT-4o-mini (Official docs verified: $0.150/1M input, $0.600/1M output; editable illustrative conversion assumption of ₹84.00/USD, not a fixed currency peg; URL: https://developers.openai.com/api/docs/models/gpt-4o-mini).'),
-          createBullet('Interaction Sizing:', '650 input tokens + 250 output tokens across an average of 18 monthly interactions per adopting business (~₹0.021/call).'),
-          createBullet('Annual AI Token Spend:', '₹1,757 total annual token cost across 4,695 activations and 84,510 calls (84.5k calls × ₹0.02079/call; < 0.02% of retained customer lifetime value).'),
+          createBullet('Interaction Sizing:', '650 input tokens + 250 output tokens across 18 onboarding setup/test interactions per newly activated business (~₹0.02079/call; exact M12 AI cost is ₹162.79 across 7,830 calls).'),
+          createBullet('Annual AI Token Spend:', '₹1,757 total annual token cost across 4,695 activations and 84,510 calls (< 0.02% of retained customer lifetime value).'),
 
           createHeading2('4.3 Key Risks & Mitigation Matrix'),
           createBullet('Recommendation Fatigue:', 'Suppressed recommendations for 14 days after activation; smart dismissal controls.'),
           createBullet('Chatbot Misinformation:', 'Strict FAQ-grounded matching; automated fallback when semantic score is below 2.5.'),
-          createBullet('Retention Lift Sensitivity:', 'Break-even resilience down to +1.0 pp retention lift (model maintains positive ROI).'),
+          createBullet('Retention Sensitivity:', 'Break-even resilience down to +1.0% retained yield (model maintains positive ROI).'),
+
+          createHeading2('4.4 AI Assistance & Personal Contributions'),
+          createBullet('AI Use & Candidate Oversight:', 'Antigravity AI agent accelerated boilerplate and scripts. Product taxonomy, diagnostic journey, 8-sheet financial model logic, unit economics, and test suites were designed, audited, and verified personally.'),
         ],
       },
     ],

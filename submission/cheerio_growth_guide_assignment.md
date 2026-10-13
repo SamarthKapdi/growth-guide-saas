@@ -114,18 +114,18 @@ Cheerio Growth Guide (*"Your next best growth move"*) is an embedded activation 
 | **Active Retained Accounts** | 73 exit accounts | 94 cohort-months | Adopting accounts × +2.0 pp lift with 5% decay |
 | **In-Period Recognized Revenue** | ₹1,22,959 / mo avg | ₹14,75,508 / year | Sum of customer-months recognized (no double counting) |
 | **Month 12 Exit ARR Run Rate** | ₹2,18,927 / mo exit | ₹26,27,124 / year exit | 73 active retained accounts × ₹2,999 × 12 months (~₹26.27L) |
-| **Annualized M12 Operating Cost** | ₹1,18,418 / mo exit | ₹14,21,016 / year exit | Fixed (₹25k) + M12 hosting (₹93k) + AI (₹163) × 12 (~₹14.21L) |
-| **Exit Net Annualized Benefit** | **₹1,00,509 / mo net** | **₹12,06,108 / year** | **Exit ARR (₹26.27L) minus Annualized M12 Cost (₹14.21L)** |
+| **Annualized M12 Operating Cost** | ₹1,18,418 / mo exit | ₹14,21,013 / year exit | Fixed (₹25k) + M12 hosting (₹93k) + AI (₹162.79) × 12 (~₹14.21L) |
+| **Exit Net Annualized Benefit** | **₹1,00,509 / mo net** | **₹12,06,111 / year** | **Exit ARR (₹26.27L) minus Annualized M12 Cost (₹14.21L)** |
 | **Contribution Margin (Exit / In-Period)** | **45.9% exit ARR** | **11.4% in-period** | **Base 45.9% flags 75% SaaS hurdle; hits 77.9% opt. or >80% incremental** |
 
-*Methodology & Hosting Attribution Notes: Retention revenue is calculated strictly on an expected-value basis (`Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU`), keeping Year-1 in-period recognized cash flow (₹14,75,508 recognized, ₹13,07,627 realized cost, +₹1,67,881 net benefit, 11.4% margin) distinct from Exit Run-Rate ARR (₹26,27,124) and Annualized M12 Operating Cost (₹14,21,016; net exit benefit ₹12,06,108, 45.9% margin). Hosting Attribution: The conservative base model allocates full-platform hosting (₹10,05,870) across all 67,058 account-months, triggering the 75% SaaS hurdle (45.9%). Under incremental feature cost attribution (~₹4.75L incremental cost), exit margin exceeds 80%. Platform hosting must not be double-counted against baseline WhatsApp campaign P&Ls.*
+*Methodology & Hosting Attribution Notes: Retention revenue is calculated strictly on an expected-value basis (`Adopting Businesses × 2.0% incremental yield × ₹2,999 ARPU with 5% monthly decay`), keeping Year-1 in-period recognized cash flow (₹14,75,508 recognized, ₹13,07,627 realized cost, +₹1,67,881 net benefit, 11.4% margin) distinct from Exit Run-Rate ARR (₹26,27,124) and Annualized M12 Operating Cost (₹14,21,013; net exit benefit ₹12,06,111, 45.9% margin). The 2.0% yield represents the illustrative share of newly activated businesses contributing an incremental retained account, not a company-wide churn reduction from 5% to 3%. Hosting Attribution: The conservative base model allocates full-platform hosting (₹10,05,870) across all 67,058 account-months, triggering the 75% SaaS hurdle (45.9%). Under incremental feature cost attribution (~₹4.75L incremental cost), exit margin exceeds 80%. Platform hosting must not be double-counted against baseline WhatsApp campaign P&Ls.*
 
 ### 4.2 AI Contribution & Token Sizing Economics
 * **Model Selected:** **OpenAI GPT-4o-mini** (Standard Pay-As-You-Go API Tier).
 * **Official Verified Pricing:** Input: **$0.150 / 1M tokens**; Output: **$0.600 / 1M tokens**; URL: `https://developers.openai.com/api/docs/models/gpt-4o-mini`.
 * **Currency Assumption:** Editable illustrative conversion assumption of **₹84.00 / USD** (not a fixed currency peg).
-* **Interaction Sizing:** 650 input tokens (prompt context, FAQ schema) + 250 output tokens (structured recommendation payload) across an average of 18 monthly interactions per adopting business (~₹0.021/call).
-* **Blended AI Token Spend:** ₹1,757 total annual token cost across 4,695 activations and 84,510 calls (84.5k calls × ₹0.02079/call; < 0.02% of retained customer lifetime value).
+* **Interaction Sizing:** 650 input tokens (prompt context, FAQ schema) + 250 output tokens (structured recommendation payload) across 18 onboarding setup/test interactions per newly activated business (~₹0.02079/call; exact M12 AI cost is ₹162.79 across 7,830 calls).
+* **Blended AI Token Spend:** ₹1,757 total annual token cost across 4,695 activations and 84,510 calls (< 0.02% of retained customer lifetime value).
 
 ### 4.3 Key Risks & Mitigation Matrix
 | Identified Risk | Severity | Operational Mitigation |
@@ -133,7 +133,10 @@ Cheerio Growth Guide (*"Your next best growth move"*) is an embedded activation 
 | **Recommendation Fatigue** | Medium | Implement smart dismissal rules; suppress recommendations for 14 days following an activation. |
 | **Chatbot Hallucination / Misinformation** | High | Ground chatbot strictly in user-authored FAQ pairs and catalog data; enforce fallback when confidence < 2.5. |
 | **WhatsApp Template Rejection** | Medium | Provide pre-approved WhatsApp Business message templates with validated variable tags. |
-| **Retention Lift Underperformance** | Medium | Model demonstrates break-even resilience at down to +1.0 pp retention improvement (see Scenarios worksheet). |
+| **Retention Lift Sensitivity** | Medium | Model demonstrates break-even resilience down to +1.0% incremental retained yield (see Scenarios worksheet). |
+
+### 4.4 AI Assistance & Personal Contributions
+* **AI Use & Candidate Oversight:** DeepMind Antigravity AI agent accelerated React UI scaffolding, test runner boilerplate, and Excel generation scripts. Core problem taxonomy, diagnostic recommendation algorithm, 8-sheet financial model architecture, pricing benchmarks, and unit economics calculations were designed, audited, and verified personally.
 
 ---
 *End of Assignment Document (4 Pages Maximum).*

@@ -51,9 +51,9 @@ The Word document was compiled using the `docx` library with calibrated 0.5-inch
     * In-Period Realized Net Benefit: **+₹1,67,881** (11.4% in-period margin)
     * Month 12 Exit MRR: ₹2,18,927 / month (73 active retained businesses at ₹2,999 ARPU)
     * Month 12 Exit ARR Run Rate: ₹26,27,124 / year (~₹26.27 Lakh, ~₹26.0 Lakh)
-    * Month 12 Recurring Operating Cost: ₹1,18,418 / month (Fixed ₹25k + Hosting ₹93,255 + AI ₹163)
-    * Annualized Month-12 Operating Cost: ₹14,21,016 / year (`'AI and Infrastructure Cost'!K17 * 12`)
-    * Exit Net Annualized Benefit (Run Rate): **₹12,06,108 / year** (`(G17 * 12) - (K17 * 12)`)
+    * Month 12 Recurring Operating Cost: ₹1,18,418 / month (Fixed ₹25k + Hosting ₹93,255 + AI ₹162.79 = ₹1,18,417.79 / mo)
+    * Annualized Month-12 Operating Cost: ₹14,21,013 / year (`'AI and Infrastructure Cost'!K17 * 12`, exact: ₹14,21,013.43)
+    * Exit Net Annualized Benefit (Run Rate): **₹12,06,111 / year** (`(G17 * 12) - (K17 * 12)`, exact: ₹12,06,110.57)
     * Exit Annualized Contribution Margin: **45.9%** (matches M12 monthly margin `J17 / G17` = 45.9%)
   * *AI Token Economics:* OpenAI GPT-4o-mini official verified pricing ($0.150/1M input, $0.600/1M output, ₹84.00/USD peg; ₹0.02079 blended cost per interaction; ₹1,757 total annual spend across 84,510 setup calls).
   * *Expected-Value Disclaimer:* Explicitly models retention revenue on an expected-value basis without double-counting.
@@ -74,14 +74,14 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
    * Monthly Churn Baseline: `5.0%`
    * Monthly Organic Business Expansion: `2.0%` MoM
    * Funnel Conversion: Reach `70.0%`, Engagement `40.0%`, Activation `25.0%`, Meaningful Use `60.0%`
-   * Retention Improvement: `+2.0 pp` (reduces churn from 5.0% to 3.0% for adopters)
+   * Incremental Retained-Account Yield: `2.0%` (assumes 2.0% of newly activated businesses contribute an incremental retained account surviving under 5.0% monthly decay; illustrative assumption, not an observed company churn drop from 5% to 3%)
    * AI Pricing: OpenAI GPT-4o-mini ($0.150 input / $0.600 output per 1M tokens; URL: `https://developers.openai.com/api/docs/models/gpt-4o-mini`), FX `₹84.00 / USD` (editable illustrative conversion assumption, not a fixed peg)
-   * Token Sizing: 650 input tokens, 250 output tokens, 18 monthly interactions per activated account (~₹0.02079 per interaction)
+   * Token Sizing: 650 input tokens, 250 output tokens, 18 setup and testing interactions per newly activated merchant during onboarding (~₹0.02079 per interaction)
    * Infrastructure: ₹15.00 variable hosting / account-month, ₹25,000 fixed monthly platform overhead
 3. **`Adoption Model`**: 12-month month-by-month funnel progression calculating active accounts, reached, engaged, new activations, cumulative activations, and meaningful-use cohorts.
 4. **`AI and Infrastructure Cost`**: Token volume sizing, OpenAI API costs (USD converted to INR), cloud hosting fees, total program cost, and unit cost per activation (₹279 average).
 5. **`Revenue and Margin`**:
-   * Modeled Retention Lift: `= Adopting Businesses * Retention Lift (2.0 pp)`
+   * Modeled Retention Lift: `= Adopting Businesses * Retained Yield % (2.0%)`
    * Active Retained Cohort Decay: `= ROUND(Prior Active * (1 - Churn 5%), 0) + New Retained`
    * Monthly Recognized Cash Flow: `= Active Retained Accounts * ₹2,999 ARPU`
    * Full Year In-Period Cash Flow Recognized: **₹14,75,508 (~₹14.76 Lakh)** across 492 customer-months
@@ -90,15 +90,15 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
    * Month 12 Exit Active Retained Accounts: **73 accounts** (`F17`)
    * Month 12 Exit MRR: **₹2,18,927 / month** (`G17`)
    * Month 12 Exit ARR Run Rate: **₹26,27,124 (~₹26.27 Lakh, ~₹26.0 Lakh / year)** (`G17 * 12`)
-   * Month 12 Monthly Operating Cost: **₹1,18,418 / month** (`'AI and Infrastructure Cost'!K17`)
-   * Annualized Month-12 Operating Cost: **₹14,21,016 / year** (`'AI and Infrastructure Cost'!K17 * 12`)
-   * Exit Net Annualized Benefit (Run Rate): **₹12,06,108 / year** (`(G17 * 12) - (K17 * 12)`)
+   * Month 12 Monthly Operating Cost: **₹1,18,418 / month** (exact: ₹1,18,417.79; `'AI and Infrastructure Cost'!K17`)
+   * Annualized Month-12 Operating Cost: **₹14,21,013 / year** (exact: ₹14,21,013.43; `'AI and Infrastructure Cost'!K17 * 12`)
+   * Exit Net Annualized Benefit (Run Rate): **₹12,06,111 / year** (exact: ₹12,06,110.57; `(G17 * 12) - (K17 * 12)`)
    * Exit Annualized Contribution Margin: **45.9%** (matches M12 monthly margin `J17 / G17` = 45.9%)
-6. **`Scenarios`**: Side-by-side comparison of Conservative (15% activation, 1.0 pp lift, -₹6.64L exit net benefit / -87.9% margin), Base (25% activation, 2.0 pp lift, +₹12.06L exit net benefit / 45.9% margin), and Optimistic (35% activation, 3.5 pp lift, +₹50.19L exit net benefit / 77.9% margin) scenarios, plus a two-dimensional sensitivity grid.
+6. **`Scenarios`**: Side-by-side comparison of Conservative (15% activation, 1.0% yield, -₹6.64L exit net benefit / -87.9% margin), Base (25% activation, 2.0% yield, +₹12.06L exit net benefit / 45.9% margin), and Optimistic (35% activation, 3.5% yield, +₹50.19L exit net benefit / 77.9% margin) scenarios, plus a two-dimensional sensitivity grid.
 7. **`Monthly Audit`**:
    * Funnel Integrity: `Reach ≤ Active Accounts`, `Engaged ≤ Reached`, `Activated ≤ Engaged` all **PASS** across all 12 months.
    * Positive Monthly Cash Flow: Ramp Phase M1–M5; PASS from M6 onward.
-   * Hurdle Rate Check: Standard SaaS 75% margin threshold flags `FLAG: BELOW 75% TARGET (45.9%)` for Base Case. Honest audit justification: Year 1 base case absorbs ₹25,000/mo fixed infrastructure (₹3.00L) and ₹15/account cloud hosting (₹10.06L) across 5,000–6,217 accounts before cohort compounding matures. Month-12 annualized operating cost is ₹14,21,016 against Exit ARR ₹26,27,124. The 75% hurdle is achieved under Optimistic scale (77.9%), Year 2 steady state, or under incremental feature cost attribution (>80%).
+   * Hurdle Rate Check: Standard SaaS 75% margin threshold flags `FLAG: BELOW 75% TARGET (45.9%)` for Base Case. Honest audit justification: Year 1 base case absorbs ₹25,000/mo fixed infrastructure (₹3.00L) and ₹15/account cloud hosting (₹10.06L) across 5,000–6,217 accounts before cohort compounding matures. Month-12 annualized operating cost is ₹14,21,013 against Exit ARR ₹26,27,124. The 75% hurdle is achieved under Optimistic scale (77.9%), Year 2 steady state, or under incremental feature cost attribution (>80%).
 8. **`Sources`**: Verified reference URLs for OpenAI official API pricing (`https://developers.openai.com/api/docs/models/gpt-4o-mini`), editable conversion assumption notes, industry SaaS churn benchmarks, and model disclaimers.
 
 ---
@@ -127,6 +127,8 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
   * Month 1: 7 accounts
   * Month 6: 39 accounts
   * Month 12: 73 active surviving accounts
+* **Methodology Distinction: Incremental Retained Yield vs. Churn Reduction:**
+  The model uses an incremental retained-account cohort method where 2.0% of newly activated businesses contribute a retained account surviving under baseline 5.0% monthly decay. This is an illustrative expected-value assumption based on feature adoption. It does **not** represent an observed 2-percentage-point drop in company-wide monthly churn (from 5% to 3%), which would apply across the entire 5,000+ business base. Both the assignment document and workbook adhere strictly to this definition.
 * **The Five Distinct Financial Metrics (No Double-Counting):**
   1. **Year-One In-Period Recognized Revenue (`SUM(G6:G17)`):**
      $$\sum_{m=1}^{12} (\text{Active Retained}_m \times ₹2,999) = \mathbf{₹14,75,508} \quad (\approx ₹14.76 \text{ Lakh})$$
@@ -141,12 +143,12 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
   4. **Month-12 Recurring Operating Cost & Annualized Cost:**
      $$\text{M12 Fixed Overhead} = \mathbf{₹25,000 / \text{mo}} \quad (`Assumptions'!$C$19)$$
      $$\text{M12 Hosting} = 6,217 \text{ accounts} \times ₹15.00 = \mathbf{₹93,255 / \text{mo}} \quad (`AI and Infrastructure Cost'!I17)$$
-     $$\text{M12 AI Tokens} = 435 \text{ activations} \times 18 \times ₹0.02079 = \mathbf{₹163 / \text{mo}} \quad (`AI and Infrastructure Cost'!H17)$$
-     $$\text{Total M12 Monthly Cost} = ₹25,000 + ₹93,255 + ₹163 = \mathbf{₹1,18,418 / \text{month}} \quad (`AI and Infrastructure Cost'!K17)$$
-     $$\text{Annualized M12 Cost} = ₹1,18,418 \times 12 = \mathbf{₹14,21,016 / \text{year}} \quad (`AI and Infrastructure Cost'!K17 * 12)$$
+     $$\text{M12 AI Tokens} = 435 \text{ activations} \times 18 \times ₹0.02079 = \mathbf{₹162.79 / \text{mo}} \quad (\text{exact: ₹162.7857; } `AI and Infrastructure Cost'!H17)$$
+     $$\text{Total M12 Monthly Cost} = ₹25,000 + ₹93,255 + ₹162.79 = \mathbf{₹1,18,417.79 / \text{month}} \quad (\text{displayed as } ₹1,18,418; `AI and Infrastructure Cost'!K17)$$
+     $$\text{Annualized M12 Cost} = ₹1,18,417.79 \times 12 = \mathbf{₹14,21,013.43 / \text{year}} \quad (\text{displayed as } ₹14,21,013; `AI and Infrastructure Cost'!K17 * 12)$$
   5. **Exit-Run-Rate Net Annualized Benefit & Contribution Margin:**
-     $$\text{Exit Net Benefit} = \text{Exit ARR} - \text{Annualized M12 Cost} = ₹26,27,124 - ₹14,21,016 = \mathbf{₹12,06,108 / \text{year}}$$
-     $$\text{Exit Contribution Margin} = \frac{₹12,06,108}{₹26,27,124} = \mathbf{45.9\%} \quad (\text{matches Month-12 monthly margin } J17 / G17 = 45.9\%)$$
+     $$\text{Exit Net Benefit} = \text{Exit ARR} - \text{Annualized M12 Cost} = ₹26,27,124 - ₹14,21,013.43 = \mathbf{₹12,06,110.57 / \text{year}} \quad (\text{displayed as } ₹12,06,111)$$
+     $$\text{Exit Contribution Margin} = \frac{₹12,06,110.57}{₹26,27,124} = \mathbf{45.9\%} \quad (\text{matches Month-12 monthly margin } J17 / G17 = 45.9\%)$$
      Harmonizes forward-looking annualized revenue with forward-looking annualized operating costs.
 
 #### 3. Hosting Cost Attribution Analysis (Full-Platform vs. Incremental Feature Cost)

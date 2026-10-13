@@ -64,11 +64,12 @@ async function createFinancialModel() {
     ['8. Sources', 'Verified benchmark sources, official API pricing references, and model disclaimers.'],
     ['', ''],
     ['METHODOLOGY & GUARDRAILS', ''],
-    ['Expected-Value Basis', 'Retention revenue = Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU.'],
+    ['Expected-Value Basis', 'Retention revenue = Adopting Businesses × Incremental Retained Yield % × Monthly Plan ARPU.'],
     ['No Double-Counting', 'Revenue is tied strictly to newly retained cohorts without compounding previously credited gains.'],
-    ['Illustrative Nature', 'All retention lifts (+2.0 pp baseline) represent testable hypotheses subject to 2-week baseline validation.'],
-    ['Run-Rate Annualization', 'Exit ARR (₹26,27,124) is compared against Annualized Month-12 Cost (₹14,21,016), yielding Exit Net Benefit ₹12,06,108 (45.9% margin), distinct from Year-1 in-period cash flow (+₹1,67,881 net, 11.4% margin).'],
+    ['Illustrative Nature', 'Incremental retained yield (2.0% baseline) represents a testable hypothesis subject to 2-week baseline validation.'],
+    ['Run-Rate Annualization', 'Exit ARR (₹26,27,124) is compared against Annualized Month-12 Cost (₹14,21,013.43), yielding Exit Net Benefit ₹12,06,110.57 (45.9% margin), distinct from Year-1 in-period cash flow (+₹1,67,881 net, 11.4% margin).'],
     ['Hosting Cost Attribution', 'Base model allocates full-platform cloud hosting (₹10,05,870) across all 67,058 account-months as a conservative stress test. Incremental feature-only allocation yields >80% margin. Platform hosting must not be double-counted against baseline WhatsApp campaign P&Ls.'],
+    ['Retention Definition', 'Modeled incremental accounts = Newly Activated Businesses × 2.0% incremental yield, surviving under 5.0% baseline monthly churn decay. Illustrative assumption, not an observed drop in company-wide churn from 5% to 3%.'],
   ];
 
   let rIdx = 5;
@@ -129,7 +130,7 @@ async function createFinancialModel() {
     ['Engagement Rate (% of Reached)', 0.40, 'Percent', '% who click recommendation or complete assessment', '0.0%'],
     ['Feature Activation Rate (% of Engaged)', 0.25, 'Percent', '% of engaged businesses who complete setup wizard', '0.0%'],
     ['Meaningful Use Qualification Rate', 0.60, 'Percent', '% of activated accounts recording qualifying use within 30d', '0.0%'],
-    ['Hypothesized Retention Lift for Adopters', 0.02, 'pp (monthly)', 'Hypothesized churn reduction for adopting businesses (+2.0 pp)', '0.0%'],
+    ['Incremental Retained-Account Yield from Newly Activated Businesses', 0.02, 'Percent', 'Share of newly activated businesses contributing an incremental retained account (surviving under baseline 5% monthly decay)', '0.0%'],
 
     // Section: AI Token Economics
     ['SECTION_HEADER', '3. AI Model & Token Economics', '', ''],
@@ -139,7 +140,7 @@ async function createFinancialModel() {
     ['USD to INR Exchange Rate', 84.00, 'INR / USD', 'Editable illustrative conversion assumption (not a fixed currency peg)', '₹#,##0.00'],
     ['Avg Input Tokens per Interaction', 650, 'Tokens', 'Context, prompt instructions, FAQ templates', '#,##0'],
     ['Avg Output Tokens per Interaction', 250, 'Tokens', 'Generated recommendation/response payload', '#,##0'],
-    ['Avg AI Interactions per Business / Mo', 18, 'Calls / mo', 'Simulated wizard setups, FAQ queries, automation tests', '#,##0'],
+    ['AI Setup/Test Interactions per Newly Activated Business', 18, 'Interactions / activation', 'Setup wizard and sandbox test calls per newly activated merchant during onboarding', '#,##0'],
 
     // Section: Platform Infrastructure
     ['SECTION_HEADER', '4. Platform Infrastructure Overhead', '', ''],
@@ -345,7 +346,7 @@ async function createFinancialModel() {
     r.getCell(2).border = borderThin;
 
     // Monthly Interactions = Adopting Businesses * Interactions / Mo
-    r.getCell(3).value = { formula: `'Adoption Model'!F${row} * ${assumpCellMap['Avg AI Interactions per Business / Mo']}` };
+    r.getCell(3).value = { formula: `'Adoption Model'!F${row} * ${assumpCellMap['AI Setup/Test Interactions per Newly Activated Business']}` };
     r.getCell(3).numFmt = '#,##0';
     r.getCell(3).border = borderThin;
 
@@ -432,7 +433,7 @@ async function createFinancialModel() {
     { width: 4 },
     { width: 12 }, // Month
     { width: 16 }, // Adopting Businesses
-    { width: 16 }, // Retention Lift (pp)
+    { width: 18 }, // Retained Yield %
     { width: 18 }, // New Retained Accounts
     { width: 22 }, // Active Retained Accounts
     { width: 22 }, // Monthly Recognized Rev (₹)
@@ -453,7 +454,7 @@ async function createFinancialModel() {
     '',
     'Month',
     'Adopting Accounts',
-    'Retention Lift',
+    'Retained Yield %',
     'New Retained Accts',
     'Active Retained Accts',
     'Monthly Recognized Rev',
@@ -480,8 +481,8 @@ async function createFinancialModel() {
     r.getCell(3).numFmt = '#,##0';
     r.getCell(3).border = borderThin;
 
-    // Retention Lift = Assumptions!Retention Lift
-    r.getCell(4).value = { formula: `${assumpCellMap['Hypothesized Retention Lift for Adopters']}` };
+    // Retained Yield % = Assumptions!Incremental Retained-Account Yield
+    r.getCell(4).value = { formula: `${assumpCellMap['Incremental Retained-Account Yield from Newly Activated Businesses']}` };
     r.getCell(4).numFmt = '0.0%';
     r.getCell(4).border = borderThin;
 
@@ -570,12 +571,12 @@ async function createFinancialModel() {
     ['12-Month Total Realized Program Cost', { formula: 'SUM(I6:I17)' }, 'Token fees (₹1,757) + Variable cloud hosting (₹10,05,870) + Fixed infra (₹3,00,000)', '₹#,##0'],
     ['12-Month In-Period Net Realized Benefit', { formula: 'SUM(J6:J17)' }, 'Recognized In-Period Revenue minus Total Realized Cost (+₹1,67,881)', '₹#,##0'],
     ['12-Month In-Period Margin %', { formula: 'K18' }, 'In-Period Net Benefit divided by In-Period Revenue (11.4%)', '0.0%'],
-    ['Month 12 Exit Active Retained Accounts', { formula: 'F17' }, 'Cumulative active retained customer accounts at Year 1 exit (73 accounts)', '#,##0'],
+    ['Month 12 Exit Active Retained Accounts', { formula: 'F17' }, 'Cumulative active retained customer accounts surviving at Year 1 exit (73 accounts)', '#,##0'],
     ['Month 12 Exit Monthly Run Rate (MRR)', { formula: 'G17' }, 'Active Retained Accounts (F17) × Monthly Plan ARPU (₹2,18,927 / mo)', '₹#,##0'],
     ['Month 12 Exit Annualized Run Rate (ARR)', { formula: 'G17 * 12' }, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26,27,124, ~₹26.27 Lakh)', '₹#,##0'],
-    ['Month 12 Recurring Monthly Operating Cost', { formula: "'AI and Infrastructure Cost'!K17" }, "Fixed (₹25k) + M12 Hosting (6,217 accts × ₹15 = ₹93,255) + M12 AI (₹163) = ₹1,18,418 / mo", '₹#,##0'],
-    ['Annualized Month-12 Operating Cost', { formula: "'AI and Infrastructure Cost'!K17 * 12" }, 'Month 12 Monthly Operating Cost × 12 months (Reconciles to ₹14,21,016 / yr)', '₹#,##0'],
-    ['Exit Net Annualized Benefit (Run Rate)', { formula: "(G17 * 12) - ('AI and Infrastructure Cost'!K17 * 12)" }, 'Exit ARR (E28) minus Annualized Month-12 Cost (E30) = ₹12,06,108 / yr', '₹#,##0'],
+    ['Month 12 Recurring Monthly Operating Cost', { formula: "'AI and Infrastructure Cost'!K17" }, "Fixed (₹25k) + M12 Hosting (6,217 accts × ₹15 = ₹93,255) + M12 AI (₹162.79) = ₹1,18,417.79 / mo (~₹1,18,418)", '₹#,##0'],
+    ['Annualized Month-12 Operating Cost', { formula: "'AI and Infrastructure Cost'!K17 * 12" }, 'Month 12 Monthly Operating Cost × 12 months (Reconciles to ₹14,21,013.43 / yr, ~₹14.21 Lakh)', '₹#,##0'],
+    ['Exit Net Annualized Benefit (Run Rate)', { formula: "(G17 * 12) - ('AI and Infrastructure Cost'!K17 * 12)" }, 'Exit ARR (E28) minus Annualized Month-12 Cost (E30) = ₹12,06,110.57 / yr (~₹12.06 Lakh)', '₹#,##0'],
     ['Exit Annualized Contribution Margin', { formula: "((G17 * 12) - ('AI and Infrastructure Cost'!K17 * 12)) / (G17 * 12)" }, 'Exit Net Benefit (E31) divided by Exit ARR (E28) = 45.9% (matches M12 margin J17/G17)', '0.0%'],
   ];
 
@@ -631,17 +632,17 @@ async function createFinancialModel() {
 
   const scenarioData = [
     ['Activation Rate (% of Engaged)', 0.15, 0.25, 0.35, 'Conversion efficiency across onboarding wizard', '0.0%'],
-    ['Retention Improvement (pp)', 0.010, 0.020, 0.035, 'Observed drop in monthly business churn rate', '0.0%'],
-    ['Avg AI Interactions / Mo', 12, 18, 25, 'Depth of chatbot and automation customization', '#,##0'],
+    ['Incremental Retained Yield %', 0.010, 0.020, 0.035, 'Share of newly activated businesses yielding an incremental retained account', '0.0%'],
+    ['AI Setup/Test Interactions / Activation', 12, 18, 25, 'Onboarding interactions per newly activated business', '#,##0'],
     ['Total 12M Activations (Est.)', 2815, 4695, 6572, 'Projected newly activated business accounts', '#,##0'],
     ['Total Year-1 Realized Cost (Est.)', 1306572, 1307627, 1309286, 'Sum of token fees, cloud hosting, and fixed platform overhead', '₹#,##0'],
     ['Month 12 Monthly Operating Cost', 118320, 118418, 118572, 'M12 operating cost (fixed ₹25k + hosting + M12 AI tokens)', '₹#,##0'],
-    ['Annualized Month-12 Operating Cost', 1419841, 1421016, 1422858, 'Month-12 monthly cost × 12 months (Reconciles to ₹14.21 Lakh Base)', '₹#,##0'],
+    ['Annualized Month-12 Operating Cost', 1419841, 1421013, 1422858, 'Month-12 monthly cost × 12 months (Reconciles to ₹14.21 Lakh Base)', '₹#,##0'],
     ['12M In-Period Revenue (Est.)', 422859, 1475508, 3655781, 'Recognized in-period cash flow over 12 months', '₹#,##0'],
     ['12M In-Period Net Benefit (Est.)', -883713, 167881, 2346495, 'In-period revenue minus Year-1 realized program cost', '₹#,##0'],
     ['12M In-Period Margin %', -2.090, 0.114, 0.642, 'In-period net benefit / in-period revenue (11.4% Base)', '0.0%'],
     ['Exit ARR Run Rate (M12 ARR)', 755748, 2627124, 6441852, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.27 Lakh Base)', '₹#,##0'],
-    ['Exit Net Annualized Benefit (Est.)', -664093, 1206108, 5018994, 'Exit ARR minus Annualized Month-12 Cost (Reconciles to ₹12.06 Lakh Base)', '₹#,##0'],
+    ['Exit Net Annualized Benefit (Est.)', -664093, 1206111, 5018994, 'Exit ARR minus Annualized Month-12 Cost (Reconciles to ₹12.06 Lakh Base)', '₹#,##0'],
     ['Exit Contribution Margin %', -0.879, 0.459, 0.779, 'Exit Net Benefit / Exit ARR (45.9% Base, 77.9% Optimistic)', '0.0%'],
   ];
 
@@ -676,12 +677,12 @@ async function createFinancialModel() {
   // Sensitivity Matrix Header
   scenRowIdx += 2;
   wsScen.mergeCells(`B${scenRowIdx}:F${scenRowIdx}`);
-  wsScen.getCell(`B${scenRowIdx}`).value = 'SENSITIVITY MATRIX: 12-Month Exit Annualized Net Benefit (₹) by Activation Rate & Retention Lift';
+  wsScen.getCell(`B${scenRowIdx}`).value = 'SENSITIVITY MATRIX: 12-Month Exit Annualized Net Benefit (₹) by Activation Rate & Retained Yield';
   wsScen.getCell(`B${scenRowIdx}`).font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
   wsScen.getCell(`B${scenRowIdx}`).fill = subHeaderFill;
   scenRowIdx++;
 
-  wsScen.getRow(scenRowIdx).values = ['', 'Activation Rate \\ Retention Lift', '+1.0 pp', '+1.5 pp', '+2.0 pp (Base)', '+2.5 pp'];
+  wsScen.getRow(scenRowIdx).values = ['', 'Activation Rate \\ Retained Yield', '1.0%', '1.5%', '2.0% (Base)', '2.5%'];
   for (let c = 2; c <= 6; c++) {
     wsScen.getRow(scenRowIdx).getCell(c).font = { bold: true };
     wsScen.getRow(scenRowIdx).getCell(c).fill = totalFill;
@@ -692,7 +693,7 @@ async function createFinancialModel() {
   const sensData = [
     ['15% (Conservative)', -664484, -232628, 127252, 559108],
     ['20%', -412959, 126861, 702669, 1206501],
-    ['25% (Base Model)', -89457, 558327, 1206108, 1853895],
+    ['25% (Base Model)', -89457, 558327, 1206111, 1853895],
     ['30%', 126080, 953804, 1709552, 2537276],
     ['35% (Optimistic)', 449581, 1349281, 2248981, 3220657],
   ];
@@ -809,7 +810,7 @@ async function createFinancialModel() {
     ['Standard SaaS Target Margin Threshold', '75.0%', 'Benchmark hurdle rate for mature SaaS software features', '0.0%'],
     ['Base Case Modeled Exit Margin (ARR)', '45.9%', "Derived from 'Revenue and Margin'!E32 (Exit Net Benefit / Exit ARR)", '0.0%'],
     ['Audit Check Status', 'FLAG: BELOW 75% TARGET (45.9%)', 'Honest audit trigger: Base case (45.9%) does not clear the 75% hurdle', '@'],
-    ['Audit Explanation & Commercial Context', 'Year 1 base case absorbs ₹25,000/mo fixed overhead (₹3.00L) and ₹15/account hosting (₹10.06L) across all 5,000–6,217 accounts before cohort compounding matures. Month-12 annualized operating cost is ₹14,21,016 against Exit ARR ₹26,27,124. The 75% hurdle is achieved under Optimistic scale (77.9%), in Year 2 steady state, or under incremental feature cost attribution (>80%).', 'Strategic justification for audit trigger', '@'],
+    ['Audit Explanation & Commercial Context', 'Year 1 base case absorbs ₹25,000/mo fixed overhead (₹3.00L) and ₹15/account hosting (₹10.06L) across all 5,000–6,217 accounts before cohort compounding matures. Month-12 annualized operating cost is ₹14,21,013 against Exit ARR ₹26,27,124. The 75% hurdle is achieved under Optimistic scale (77.9%), in Year 2 steady state, or under incremental feature cost attribution (>80%).', 'Strategic justification for audit trigger', '@'],
   ];
 
   let hRowIdx = 22;
@@ -865,15 +866,15 @@ async function createFinancialModel() {
   }
 
   const sourcesData = [
-    ['OpenAI GPT-4o-mini Input Tokens', '$0.150 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '13-Oct-2026', 'Official public pay-as-you-go pricing tier ($0.15/1M input)'],
-    ['OpenAI GPT-4o-mini Output Tokens', '$0.600 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '13-Oct-2026', 'Official public pay-as-you-go pricing tier ($0.60/1M output)'],
-    ['USD / INR Foreign Exchange Rate', '₹84.00 per USD', 'Market Reference / Editable Assumption', 'INR', '13-Oct-2026', 'Editable illustrative conversion assumption (not a fixed currency peg)'],
-    ['AI Call Population Rationale', '4,695 newly activated businesses', 'Adoption Model!F (New Activations)', 'Accounts', '13-Oct-2026', '18 setup & testing calls/merchant during onboarding = 84,510 annual calls = ₹1,757 spend'],
-    ['Variable Cloud Hosting Sizing', '67,058 account-months', 'Adoption Model!C (Active Businesses)', 'INR', '13-Oct-2026', '₹15.00/acct-mo across 5,000 to 6,217 compounding active businesses = ₹10,05,870'],
-    ['Baseline Active Businesses', '5,000 businesses', 'Cheerio Product Intern Take-Home Brief', 'Accounts', '13-Oct-2026', 'Assignment specification starting universe (5,000 in M1 to 6,217 in M12)'],
-    ['Cheerio Monthly Plan ARPU', '₹2,999 / month', 'Cheerio Growth Tier Public Plan Matrix', 'INR', '13-Oct-2026', 'Mid-tier plan for D2C brands utilizing WhatsApp + automation'],
-    ['Baseline Monthly Churn Rate', '5.0% / month', 'B2B SaaS D2C Industry Benchmark (ProfitWell)', 'Percent', '13-Oct-2026', 'Standard SMB SaaS benchmark prior to guided feature activation'],
-    ['Hypothesized Retention Lift', '+2.0 pp (to 3.0% churn)', 'Product Strategy Hypothesis', 'Percent', '13-Oct-2026', 'Subject to pre-rollout 2-week baseline measurement period'],
+    ['OpenAI GPT-4o-mini Input Tokens', '$0.150 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '14-Oct-2026', 'Official public pay-as-you-go pricing tier ($0.15/1M input)'],
+    ['OpenAI GPT-4o-mini Output Tokens', '$0.600 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '14-Oct-2026', 'Official public pay-as-you-go pricing tier ($0.60/1M output)'],
+    ['USD / INR Foreign Exchange Rate', '₹84.00 per USD', 'Market Reference / Editable Assumption', 'INR', '14-Oct-2026', 'Editable illustrative conversion assumption (not a fixed currency peg)'],
+    ['AI Call Population Rationale', '4,695 newly activated businesses', 'Adoption Model!F (New Activations)', 'Accounts', '14-Oct-2026', '18 setup & testing calls/merchant during onboarding = 84,510 annual calls = ₹1,757 spend'],
+    ['Variable Cloud Hosting Sizing', '67,058 account-months', 'Adoption Model!C (Active Businesses)', 'INR', '14-Oct-2026', '₹15.00/acct-mo across 5,000 to 6,217 compounding active businesses = ₹10,05,870'],
+    ['Baseline Active Businesses', '5,000 businesses', 'Cheerio Product Intern Take-Home Brief', 'Accounts', '14-Oct-2026', 'Assignment specification starting universe (5,000 in M1 to 6,217 in M12)'],
+    ['Cheerio Monthly Plan ARPU', '₹2,999 / month', 'Cheerio Growth Tier Public Plan Matrix', 'INR', '14-Oct-2026', 'Mid-tier plan for D2C brands utilizing WhatsApp + automation'],
+    ['Baseline Monthly Churn Rate', '5.0% / month', 'B2B SaaS D2C Industry Benchmark (ProfitWell)', 'Percent', '14-Oct-2026', 'Standard SMB SaaS benchmark prior to guided feature activation'],
+    ['Incremental Retained-Account Yield', '2.0% per activation', 'Product Strategy Hypothesis', 'Percent', '14-Oct-2026', '2.0% of newly activated businesses yield an incremental saved account (5% monthly decay applied; not a company churn reduction from 5% to 3%)'],
   ];
 
   let srcRowIdx = 5;
@@ -892,7 +893,7 @@ async function createFinancialModel() {
   // Legal / Model Disclaimer
   srcRowIdx += 2;
   wsSrc.mergeCells(`B${srcRowIdx}:G${srcRowIdx}`);
-  wsSrc.getCell(`B${srcRowIdx}`).value = 'DISCLAIMER: This financial model is an exploratory projection created for the Cheerio AI Product Intern Assignment B take-home evaluation. Modeled retention lifts (+2.0 pp) and incremental revenue figures are expected-value estimates and do not represent verified production analytics or commercial guarantees.';
+  wsSrc.getCell(`B${srcRowIdx}`).value = 'DISCLAIMER: This financial model is an exploratory projection created for the Cheerio AI Product Intern Assignment B take-home evaluation. Modeled incremental retained yields (2.0% base) and incremental revenue figures are expected-value estimates and do not represent verified production analytics or commercial guarantees.';
   wsSrc.getCell(`B${srcRowIdx}`).font = { name: 'Calibri', size: 9, italic: true, color: { argb: 'FF64748B' } };
 
   // Write file

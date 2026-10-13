@@ -43,6 +43,10 @@ function runModel(activationRate, retentionLift, avgInteractions) {
     const monthlyCost = aiCost + cloudCost + fixedOverhead;
     totalCost += monthlyCost;
 
+    if (m === 12) {
+      m12MonthlyCost = monthlyCost;
+    }
+
     // Retained
     const newRetained = Math.round(activated * retentionLift);
     if (m === 1) {
@@ -56,7 +60,8 @@ function runModel(activationRate, retentionLift, avgInteractions) {
 
   const exitMRR = activeRetained * arpu;
   const exitARR = exitMRR * 12;
-  const exitNetBenefit = exitARR - totalCost;
+  const annualizedM12Cost = m12MonthlyCost * 12;
+  const exitNetBenefit = exitARR - annualizedM12Cost;
   const exitMargin = exitNetBenefit / exitARR;
   const inPeriodNetBenefit = totalInPeriodRev - totalCost;
   const inPeriodMargin = inPeriodNetBenefit / totalInPeriodRev;
@@ -64,6 +69,8 @@ function runModel(activationRate, retentionLift, avgInteractions) {
   return {
     activations: totalActivations,
     totalCost: Math.round(totalCost),
+    m12MonthlyCost: Math.round(m12MonthlyCost),
+    annualizedM12Cost: Math.round(annualizedM12Cost),
     inPeriodRev: Math.round(totalInPeriodRev),
     inPeriodNetBenefit: Math.round(inPeriodNetBenefit),
     inPeriodMargin: inPeriodMargin,
