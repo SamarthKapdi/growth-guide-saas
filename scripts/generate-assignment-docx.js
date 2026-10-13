@@ -317,24 +317,24 @@ async function generateDocx() {
               new TableRow({
                 children: [
                   createCell('Feature Activations (25% rate)', false, 32, true),
-                  createCell('391 / month', false, 22),
-                  createCell('4,691 activations', false, 22),
+                  createCell('391 / month avg', false, 22),
+                  createCell('4,695 activations', false, 22),
                   createCell('Merchants completing feature setup wizards', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
                   createCell('Total AI & Infrastructure Cost', false, 32, true),
-                  createCell('₹1,09,833 / mo', false, 22),
-                  createCell('₹13,18,000 / yr', false, 22),
+                  createCell('₹1,08,969 / mo avg', false, 22),
+                  createCell('₹13,07,627 / yr', false, 22),
                   createCell('OpenAI GPT-4o-mini + hosting + overhead', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
                   createCell('Cost Per Feature Activation', false, 32, true),
-                  createCell('₹281 / activation', false, 22),
-                  createCell('₹281 average', false, 22),
+                  createCell('₹279 / activation', false, 22),
+                  createCell('₹279 average', false, 22),
                   createCell('Total program cost divided by activations', false, 24),
                 ],
               }),
@@ -350,7 +350,7 @@ async function generateDocx() {
                 children: [
                   createCell('In-Period Recognized Revenue', false, 32, true),
                   createCell('₹1,22,959 / mo avg', false, 22),
-                  createCell('₹14,76,000 / yr', false, 22),
+                  createCell('₹14,75,508 / yr', false, 22),
                   createCell('Sum of recognized customer-months (no double counting)', false, 24),
                 ],
               }),
@@ -358,35 +358,35 @@ async function generateDocx() {
                 children: [
                   createCell('Month 12 Exit ARR Run Rate', false, 32, true),
                   createCell('₹2,18,927 / mo exit', false, 22),
-                  createCell('₹26,00,000 / yr exit', false, 22),
+                  createCell('₹26,27,124 / yr exit', false, 22),
                   createCell('73 active retained accounts × ₹2,999 × 12 months', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
                   createCell('Net Program Benefit (Exit ARR)', false, 32, true),
-                  createCell('₹1,06,833 / mo avg', false, 22),
-                  createCell('₹12,82,000 / yr', false, 22),
+                  createCell('₹1,09,958 / mo avg', false, 22),
+                  createCell('₹13,19,497 / yr', false, 22),
                   createCell('Exit ARR minus total annual program cost', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
                   createCell('Contribution Margin (Exit / In-Period)', false, 32, true),
-                  createCell('49.3% exit ARR', false, 22),
-                  createCell('10.7% in-period', false, 22),
-                  createCell('Base 49.3% flags 75% SaaS hurdle; hits 70.4% in opt.', false, 24),
+                  createCell('50.2% exit ARR', false, 22),
+                  createCell('11.4% in-period', false, 22),
+                  createCell('Base 50.2% flags 75% SaaS hurdle; hits 79.7% in opt.', false, 24),
                 ],
               }),
             ],
           }),
 
-          createPara('Methodology & Audit Notes: Revenue is modeled strictly on expected value (Adopters × +2.0 pp lift × ₹2,999 ARPU). Distinguishes in-period cash flow (₹14.76L) from Month 12 Exit ARR (₹26.0L). 75% SaaS hurdle flags Year 1 base case (49.3%) due to fixed setup overhead; cleared at scale or Y2.', true),
+          createPara('Methodology & Audit Notes: Revenue is modeled strictly on expected value (Adopters × +2.0 pp lift × ₹2,999 ARPU). Distinguishes in-period cash flow (₹14,75,508) from Month 12 Exit ARR (₹26,27,124). 75% SaaS hurdle flags Year 1 base case (50.2%) due to fixed setup overhead; cleared at scale (79.7%) or Y2.', true),
 
           createHeading2('4.2 AI Token Economics & Provider Pricing Benchmark'),
           createBullet('Model Selected:', 'OpenAI GPT-4o-mini (Official docs verified: $0.150/1M input, $0.600/1M output; editable illustrative conversion assumption of ₹84.00/USD, not a fixed currency peg; URL: https://developers.openai.com/api/docs/models/gpt-4o-mini).'),
           createBullet('Interaction Sizing:', '650 input tokens + 250 output tokens across an average of 18 monthly interactions per adopting business (~₹0.021/call).'),
-          createBullet('Annual AI Token Spend:', '₹12,490 total annual token cost across 4,691 activations (< 0.2% of retained customer lifetime value).'),
+          createBullet('Annual AI Token Spend:', '₹1,757 total annual token cost across 4,695 activations and 84,510 calls (84.5k calls × ₹0.02079/call; < 0.02% of retained customer lifetime value).'),
 
           createHeading2('4.3 Key Risks & Mitigation Matrix'),
           createBullet('Recommendation Fatigue:', 'Suppressed recommendations for 14 days after activation; smart dismissal controls.'),

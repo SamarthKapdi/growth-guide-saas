@@ -45,11 +45,14 @@ The Word document was compiled using the `docx` library with calibrated 0.5-inch
   * *Guardrails:* Spam report rate < 0.2%, support escalation backlog increase < 5%, opt-out rate < 1.0%.
 * **Page 4: Business Case, Financial Model & Risk Management**
   * *Financial Summary Table:* 12-month projections derived directly from `cheerio_growth_guide_financial_model.xlsx`:
-    * Full Year Activations: 4,691 accounts
-    * Full Year AI & Infra Cost: ₹13,18,000 (Average cost per activation: ₹281)
-    * Incremental Retained Revenue: ₹26,00,000 (96 net retained businesses at ₹2,999 ARPU)
-    * Net Modeled Benefit: **₹12,82,000 / year** (49.3% contribution margin)
-  * *AI Token Economics:* OpenAI GPT-4o-mini official verified pricing ($0.150/1M input, $0.600/1M output, ₹84.00/USD peg; ₹0.021 blended cost per interaction).
+    * Full Year Activations: 4,695 accounts (350 in M1 to 435 in M12)
+    * Full Year AI & Infra Cost: ₹13,07,627 (Average cost per activation: ₹279)
+    * In-Period Recognized Revenue: ₹14,75,508 across 492 customer-months (~₹14.76 Lakh)
+    * Month 12 Exit MRR: ₹2,18,927 / month (73 active retained businesses at ₹2,999 ARPU)
+    * Month 12 Exit ARR Run Rate: ₹26,27,124 / year (~₹26.27 Lakh, ~₹26.0 Lakh)
+    * Net Modeled Benefit (Exit ARR): **₹13,19,497 / year** (50.2% contribution margin)
+    * In-Period Net Benefit: **+₹1,67,881** (11.4% in-period margin)
+  * *AI Token Economics:* OpenAI GPT-4o-mini official verified pricing ($0.150/1M input, $0.600/1M output, ₹84.00/USD peg; ₹0.02079 blended cost per interaction; ₹1,757 total annual spend across 84,510 setup calls).
   * *Expected-Value Disclaimer:* Explicitly models retention revenue on an expected-value basis without double-counting.
   * *Risk Matrix:* Recommendation fatigue suppression, hallucination guardrails, and WhatsApp template compliance.
 
@@ -70,45 +73,47 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
    * Funnel Conversion: Reach `70.0%`, Engagement `40.0%`, Activation `25.0%`, Meaningful Use `60.0%`
    * Retention Improvement: `+2.0 pp` (reduces churn from 5.0% to 3.0% for adopters)
    * AI Pricing: OpenAI GPT-4o-mini ($0.150 input / $0.600 output per 1M tokens; URL: `https://developers.openai.com/api/docs/models/gpt-4o-mini`), FX `₹84.00 / USD` (editable illustrative conversion assumption, not a fixed peg)
-   * Token Sizing: 650 input tokens, 250 output tokens, 18 monthly interactions per active account (~₹0.021 per interaction)
-   * Infrastructure: ₹15.00 variable hosting / account, ₹25,000 fixed monthly overhead
+   * Token Sizing: 650 input tokens, 250 output tokens, 18 monthly interactions per activated account (~₹0.02079 per interaction)
+   * Infrastructure: ₹15.00 variable hosting / account-month, ₹25,000 fixed monthly platform overhead
 3. **`Adoption Model`**: 12-month month-by-month funnel progression calculating active accounts, reached, engaged, new activations, cumulative activations, and meaningful-use cohorts.
-4. **`AI and Infrastructure Cost`**: Token volume sizing, OpenAI API costs (USD converted to INR), cloud hosting fees, total program cost, and unit cost per activation (₹281 average).
+4. **`AI and Infrastructure Cost`**: Token volume sizing, OpenAI API costs (USD converted to INR), cloud hosting fees, total program cost, and unit cost per activation (₹279 average).
 5. **`Revenue and Margin`**:
    * Modeled Retention Lift: `= Adopting Businesses * Retention Lift (2.0 pp)`
    * Active Retained Cohort Decay: `= ROUND(Prior Active * (1 - Churn 5%), 0) + New Retained`
    * Monthly Recognized Cash Flow: `= Active Retained Accounts * ₹2,999 ARPU`
-   * Full Year In-Period Cash Flow Recognized: **₹14,75,508 (~₹14.76 Lakh)** across customer-months
+   * Full Year In-Period Cash Flow Recognized: **₹14,75,508 (~₹14.76 Lakh)** across 492 customer-months
    * Month 12 Exit Active Retained Accounts: **73 accounts**
    * Month 12 Exit MRR: **₹2,18,927 / month**
-   * Month 12 Exit ARR Run Rate: **₹26,27,124 (~₹26.0 Lakh / year)**
-   * Total Program Cost: **₹13,18,000 / year**
-   * Net Annualized Benefit (Exit ARR basis): **₹12,82,000 / year** (Exit Contribution Margin: **49.3%**)
-   * In-Period Year 1 Net Benefit: **+₹1,57,508 (~₹1.58 Lakh)** (In-Period Margin: **10.7%**)
-6. **`Scenarios`**: Side-by-side comparison of Conservative (15% activation, 1.0 pp lift, -₹3.4L net), Base (25% activation, 2.0 pp lift, +₹12.8L net, 49.3% margin), and Optimistic (35% activation, 3.5 pp lift, +₹36.6L net, 70.4% margin) scenarios, plus a two-dimensional sensitivity grid.
+   * Month 12 Exit ARR Run Rate: **₹26,27,124 (~₹26.27 Lakh, ~₹26.0 Lakh / year)**
+   * Total Program Cost: **₹13,07,627 / year**
+   * Net Annualized Benefit (Exit ARR basis): **₹13,19,497 / year** (Exit Contribution Margin: **50.2%**)
+   * In-Period Year 1 Net Benefit: **+₹1,67,881 (~₹1.68 Lakh)** (In-Period Margin: **11.4%**)
+6. **`Scenarios`**: Side-by-side comparison of Conservative (15% activation, 1.0 pp lift, -₹5.5L exit net), Base (25% activation, 2.0 pp lift, +₹13.2L exit net, 50.2% margin), and Optimistic (35% activation, 3.5 pp lift, +₹51.3L exit net, 79.7% margin) scenarios, plus a two-dimensional sensitivity grid.
 7. **`Monthly Audit`**:
    * Funnel Integrity: `Reach ≤ Active Accounts`, `Engaged ≤ Reached`, `Activated ≤ Engaged` all **PASS** across all 12 months.
    * Positive Monthly Cash Flow: Ramp Phase M1–M5; PASS from M6 onward.
-   * Hurdle Rate Check: Standard SaaS 75% margin threshold flags `ALERT: BELOW 75% TARGET (49.3%)` for Base Case. Honest audit justification: Year 1 bears ₹25,000/mo fixed infrastructure and ₹15/account cloud hosting across 5,000 accounts before cohort compounding matures. Hurdle is achieved under Optimistic scale (70.4%–78.0%) or Year 2 steady state.
+   * Hurdle Rate Check: Standard SaaS 75% margin threshold flags `ALERT: BELOW 75% TARGET (50.2%)` for Base Case. Honest audit justification: Year 1 bears ₹25,000/mo fixed infrastructure (₹3.00L) and ₹15/account cloud hosting (₹10.06L) across 5,000 baseline accounts before cohort compounding matures. Hurdle is achieved under Optimistic scale (79.7%) or Year 2 steady state.
 8. **`Sources`**: Verified reference URLs for OpenAI official API pricing (`https://developers.openai.com/api/docs/models/gpt-4o-mini`), editable conversion assumption notes, industry SaaS churn benchmarks, and model disclaimers.
 
 ---
 
 ### Detailed Mathematical Reconciliation Traces
 
-#### 1. Funnel Calculation vs. 12-Month Forecast (4,691 Activations)
+#### 1. Funnel Calculation vs. 12-Month Forecast (4,695 Activations)
 * **Simple Static 1-Month Funnel:**
   $$\text{Reach} = 5,000 \times 70\% = 3,500$$
   $$\text{Engagement} = 3,500 \times 40\% = 1,400$$
   $$\text{Activations} = 1,400 \times 25\% = 350 \text{ accounts/month}$$
   $$\text{Static 12-Month Extrapolation} = 350 \times 12 = 4,200 \text{ activations}$$
 * **Actual 12-Month Compounding Model:**
-  The financial model accounts for 2.0% MoM organic expansion of the Cheerio business base (growing from 5,000 in Month 1 to 6,217 in Month 12; monthly average = 5,584 accounts).
-  $$\text{Month 1} = 350, \quad \text{Month 2} = 357, \quad \text{Month 3} = 364, \quad \dots, \quad \text{Month 12} = 435$$
-  $$\text{Cumulative Activations} = \sum_{m=1}^{12} \text{Activations}_m = 4,691 \text{ activations}$$
-  The 491-activation difference represents organic business customer growth compounding over 12 months.
+  The financial model accounts for 2.0% MoM organic expansion of the Cheerio business base (growing from 5,000 in Month 1 to 6,217 in Month 12; 12-month average = 5,588 accounts; total account-months = 67,058).
+  Applying the funnel with cell-level rounding:
+  $$\text{M1: } 350, \quad \text{M2: } 357, \quad \text{M3: } 364, \quad \text{M4: } 372, \quad \text{M5: } 379, \quad \text{M6: } 387$$
+  $$\text{M7: } 394, \quad \text{M8: } 402, \quad \text{M9: } 410, \quad \text{M10: } 418, \quad \text{M11: } 427, \quad \text{M12: } 435$$
+  $$\text{Cumulative Activations} = \sum_{m=1}^{12} \text{Activations}_m = \mathbf{4,695 \text{ activations}}$$
+  The 495-activation difference ($4,695 - 4,200$) represents organic business customer growth compounding over 12 months. (The earlier draft reference to 4,691 was a typo that omitted rounding in intermediate steps; the exact sum of the monthly figures is 4,695).
 
-#### 2. Reconciliation of ₹26 Lakh Incremental Retained Revenue & Customer-Months
+#### 2. Reconciliation of ₹26 Lakh Revenue & The Five Core Metrics
 * **Month-by-Month Retained Cohort Dynamic:**
   In each month $m$, adopting merchants generate new saved accounts: $\text{New Retained}_m = \text{ROUND}(\text{Activations}_m \times 2.0\%)$.
   Active surviving retained accounts compound with 5.0% baseline monthly churn:
@@ -116,28 +121,41 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
   * Month 1: 7 accounts
   * Month 6: 39 accounts
   * Month 12: 73 active surviving accounts
-* **Three Levels of Revenue Measurement (Strictly Avoiding Double-Counting):**
-  1. **Month 12 Exit MRR Run Rate:**
-     $$73 \text{ active retained accounts} \times ₹2,999 = ₹2,18,927 / \text{month}$$
-  2. **Month 12 Exit ARR Run Rate (Annualized Recurring Revenue):**
-     $$₹2,18,927 \times 12 = ₹26,27,124 \approx ₹26.0 \text{ Lakh / year}$$
-  3. **12-Month In-Period Recognized Cash Flow (Customer-Months):**
-     Recognized monthly cash flow is the sum of surviving cohorts billed each month:
-     $$\text{In-Period Cash Flow} = \sum_{m=1}^{12} (\text{Active Retained}_m \times ₹2,999) = ₹14,75,508 \approx ₹14.76 \text{ Lakh}$$
-  *Net Benefit & Margin on Exit ARR Basis:* ₹26.00L - ₹13.18L = **₹12.82 Lakh** (49.3% contribution margin).  
-  *Net Benefit & Margin on In-Period Cash Flow Basis:* ₹14.76L - ₹13.18L = **+₹1.58 Lakh** (10.7% margin, fully absorbing all Year 1 fixed setup costs).
+* **The Five Distinct Financial Metrics (No Double-Counting):**
+  1. **Year-One In-Period Revenue (SUM G6:G17):**
+     $$\sum_{m=1}^{12} (\text{Active Retained}_m \times ₹2,999) = \mathbf{₹14,75,508} \quad (\approx ₹14.76 \text{ Lakh})$$
+     Represents the cash recognized across 492 customer-months billed in Year 1.
+  2. **Month-12 Exit Monthly Recurring Revenue (MRR):**
+     $$73 \text{ active retained accounts} \times ₹2,999 = \mathbf{₹2,18,927 / \text{month}}$$
+  3. **Month-12 Exit Annualized Recurring Revenue (ARR):**
+     $$₹2,18,927 \times 12 = \mathbf{₹26,27,124 / \text{year}} \quad (\approx ₹26.27 \text{ Lakh, or } \approx ₹26.0 \text{ Lakh})$$
+  4. **Year-One In-Period Net Benefit:**
+     $$₹14,75,508 - ₹13,07,627 = \mathbf{+₹1,67,881} \quad (\text{In-Period Margin: } \mathbf{11.4\%})$$
+     Confirms the program is cash-flow positive within Year 1 while absorbing all fixed setup costs.
+  5. **Exit-Run-Rate Net Benefit:**
+     $$₹26,27,124 - ₹13,07,627 = \mathbf{₹13,19,497 / \text{year}} \quad (\text{Exit Contribution Margin: } \mathbf{50.2\%})$$
+     Compares the forward-looking annualized run rate against the annual operating cost baseline.
 
-#### 3. AI Cost Sizing & Verified Provider Rates
-* **Model:** OpenAI GPT-4o-mini via official API docs (`https://developers.openai.com/api/docs/models/gpt-4o-mini`).
-* **Input Price:** $0.150 per 1M tokens ($0.00015 / 1K tokens).
-* **Output Price:** $0.600 per 1M tokens ($0.00060 / 1K tokens).
-* **Foreign Exchange:** ₹84.00 / USD (editable illustrative conversion assumption).
-* **Interaction Sizing:** 650 input tokens + 250 output tokens across 18 interactions/merchant/mo.
-* **Blended Cost per Call:**
-  $$\left(\frac{650}{10^6} \times 0.150 + \frac{250}{10^6} \times 0.600\right) \times 84 = (0.0000975 + 0.000150) \times 84 = ₹0.02079 \approx ₹0.021 / \text{call}$$
-* **Full-Year AI Token Cost across 4,691 activations:** **₹12,490** (< 0.2% of retained CLV).
-* **Total Annual Program Cost:** ₹3,00,000 (fixed overhead) + ₹10,05,510 (cloud hosting) + ₹12,490 (AI tokens) = **₹13,18,000**.
-* **Cost Per Activation:** ₹13,18,000 / 4,691 = **₹281 / activation**.
+#### 3. Hosting Cost Reconciliation (Resolution of ₹360 Variance)
+* The 12 monthly active accounts are: 5,000, 5,100, 5,202, 5,306, 5,412, 5,520, 5,630, 5,743, 5,858, 5,975, 6,095, 6,217.
+* Sum of account-months: $\sum = \mathbf{67,058 \text{ account-months}}$.
+* Variable Cloud Hosting: $67,058 \times ₹15.00 = \mathbf{₹10,05,870.00}$.
+* *Resolution:* The previous draft text cited ₹10,05,510 due to an unrounded geometric sequence calculation ($5,000 \times 1.02^{m-1}$). The actual workbook formula (`= 'Adoption Model'!C{row} * 15`) evaluates to exactly ₹10,05,870, resolving the ₹360 discrepancy.
+
+#### 4. AI Cost Volume Reconciliation (Resolution of ₹12,490 Variance)
+* **Population Generating Calls:** Newly activated businesses completing setup wizards and testing sandbox features (`Adoption Model!F`, 4,695 total activations).
+* **Interactions Per Business:** 18 setup and testing interactions per newly activated merchant during onboarding.
+* **Annual Call Volume:** $4,695 \times 18 = \mathbf{84,510 \text{ total calls}}$ (6,300 in M1 scaling to 7,830 in M12).
+* **Token Sizing:** 650 input tokens + 250 output tokens per call.
+  * Input tokens: $84,510 \times 650 = 54,931,500 \text{ tokens}$ ($54.93\text{M}$)
+  * Output tokens: $84,510 \times 250 = 21,127,500 \text{ tokens}$ ($21.13\text{M}$)
+* **Provider Pricing (OpenAI GPT-4o-mini):** Input $0.150/1M, Output $0.600/1M, FX ₹84.00/USD.
+  * Cost per call: $[(650/10^6 \times 0.150) + (250/10^6 \times 0.600)] \times 84 = \mathbf{₹0.02079 / \text{call}}$.
+* **Actual Annual AI Token Spend:**
+  $$84,510 \times ₹0.02079 = \mathbf{₹1,756.96 \approx ₹1,757 / \text{year}} \quad (< 0.02\% \text{ of retained CLV})$$
+* *Resolution:* The previous draft citation of ₹12,490 was a top-down budget residual ($₹13,18,000 - ₹10,05,510 - ₹3,00,000 = ₹12,490$) which implied ~600,770 calls. The bottom-up formula-driven workbook cost is verified at ₹1,757 across 84,510 calls.
+* **Total Program Cost:** $₹3,00,000 \text{ (fixed)} + ₹10,05,870 \text{ (hosting)} + ₹1,757 \text{ (AI)} = \mathbf{₹13,07,627}$.
+* **Cost Per Activation:** $₹13,07,627 / 4,695 = \mathbf{₹278.51 \approx ₹279 / \text{activation}}$.
 
 ---
 

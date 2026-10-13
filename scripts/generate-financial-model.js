@@ -410,7 +410,7 @@ async function createFinancialModel() {
     { formula: 'SUM(I6:I17)' },
     { formula: 'SUM(J6:J17)' },
     { formula: 'SUM(K6:K17)' },
-    { formula: 'AVERAGE(L6:L17)' },
+    { formula: "K18 / 'Adoption Model'!F18" },
   ];
   for (let c = 2; c <= 12; c++) {
     const cell = costTotRow.getCell(c);
@@ -444,7 +444,7 @@ async function createFinancialModel() {
   wsRev.getCell('B2').value = 'Revenue Impact, Customer-Months, Net Benefit & Contribution Margin';
   wsRev.getCell('B2').font = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FF1E293B' } };
   wsRev.mergeCells('B3:K3');
-  wsRev.getCell('B3').value = 'Distinguishes in-period recognized cash flow (customer-months) from Month 12 exit run rate ARR (₹26 lakh). No double counting.';
+  wsRev.getCell('B3').value = 'Distinguishes in-period recognized cash flow (customer-months) from Month 12 exit run rate ARR (₹26.27 lakh). No double counting.';
   wsRev.getCell('B3').font = { name: 'Calibri', size: 10, italic: true, color: { argb: 'FF64748B' } };
 
   wsRev.getRow(5).values = [
@@ -564,15 +564,15 @@ async function createFinancialModel() {
   wsRev.getCell('B21').fill = subHeaderFill;
 
   const reconRows = [
-    ['12-Month In-Period Recognized Revenue', { formula: 'SUM(G6:G17)' }, 'Sum of customer-months recognized across Months 1–12', '₹#,##0'],
-    ['12-Month Total Program Cost', { formula: 'SUM(I6:I17)' }, 'Token fees + Variable cloud hosting + Fixed infrastructure', '₹#,##0'],
-    ['12-Month In-Period Net Benefit', { formula: 'SUM(J6:J17)' }, 'Recognized In-Period Revenue minus Total Cost', '₹#,##0'],
-    ['12-Month In-Period Margin %', { formula: 'K18' }, 'In-Period Net Benefit divided by In-Period Revenue', '0.0%'],
-    ['Month 12 Exit Active Retained Accounts', { formula: 'F17' }, 'Cumulative active retained customer accounts at Year 1 exit', '#,##0'],
-    ['Month 12 Exit Monthly Run Rate (MRR)', { formula: 'G17' }, 'Active Retained Accounts (F17) × Monthly Plan ARPU', '₹#,##0'],
-    ['Month 12 Exit Annualized Run Rate (ARR)', { formula: 'G17 * 12' }, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.0 Lakh)', '₹#,##0'],
-    ['Exit Net Modeled Annual Benefit', { formula: '(G17 * 12) - SUM(I6:I17)' }, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹12.82 Lakh)', '₹#,##0'],
-    ['Exit Annualized Contribution Margin', { formula: '((G17 * 12) - SUM(I6:I17)) / (G17 * 12)' }, 'Exit Net Benefit divided by Exit ARR (Reconciles to 49.3%)', '0.0%'],
+    ['12-Month In-Period Recognized Revenue', { formula: 'SUM(G6:G17)' }, 'Sum of customer-months recognized across Months 1–12 (₹14,75,508)', '₹#,##0'],
+    ['12-Month Total Program Cost', { formula: 'SUM(I6:I17)' }, 'Token fees (₹1,757) + Variable cloud hosting (₹10,05,870) + Fixed infra (₹3,00,000)', '₹#,##0'],
+    ['12-Month In-Period Net Benefit', { formula: 'SUM(J6:J17)' }, 'Recognized In-Period Revenue minus Total Cost (+₹1,67,881)', '₹#,##0'],
+    ['12-Month In-Period Margin %', { formula: 'K18' }, 'In-Period Net Benefit divided by In-Period Revenue (11.4%)', '0.0%'],
+    ['Month 12 Exit Active Retained Accounts', { formula: 'F17' }, 'Cumulative active retained customer accounts at Year 1 exit (73 accounts)', '#,##0'],
+    ['Month 12 Exit Monthly Run Rate (MRR)', { formula: 'G17' }, 'Active Retained Accounts (F17) × Monthly Plan ARPU (₹2,18,927 / mo)', '₹#,##0'],
+    ['Month 12 Exit Annualized Run Rate (ARR)', { formula: 'G17 * 12' }, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26,27,124, ~₹26.27 Lakh)', '₹#,##0'],
+    ['Exit Net Modeled Annual Benefit', { formula: '(G17 * 12) - SUM(I6:I17)' }, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹13,19,497, ~₹13.19 Lakh)', '₹#,##0'],
+    ['Exit Annualized Contribution Margin', { formula: '((G17 * 12) - SUM(I6:I17)) / (G17 * 12)' }, 'Exit Net Benefit divided by Exit ARR (Reconciles to 50.2%)', '0.0%'],
   ];
 
   let rBoxIdx = 22;
@@ -629,12 +629,12 @@ async function createFinancialModel() {
     ['Activation Rate (% of Engaged)', 0.15, 0.25, 0.35, 'Conversion efficiency across onboarding wizard', '0.0%'],
     ['Retention Improvement (pp)', 0.010, 0.020, 0.035, 'Observed drop in monthly business churn rate', '0.0%'],
     ['Avg AI Interactions / Mo', 12, 18, 25, 'Depth of chatbot and automation customization', '#,##0'],
-    ['Total 12M Activations (Est.)', 2700, 4691, 6800, 'Projected newly activated business accounts', '#,##0'],
-    ['Total 12M Cost (Est.)', 1150000, 1318000, 1540000, 'Sum of token fees and hosting overhead', '₹#,##0'],
-    ['12M In-Period Revenue (Est.)', 590000, 1475508, 2850000, 'Recognized in-period cash flow over 12 months', '₹#,##0'],
-    ['Exit ARR Run Rate (M12 ARR)', 1040000, 2600000, 5200000, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.0 Lakh)', '₹#,##0'],
-    ['Exit Net Modeled Benefit (Est.)', -110000, 1282000, 3660000, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹12.82 Lakh)', '₹#,##0'],
-    ['Exit Contribution Margin %', -0.106, 0.493, 0.704, 'Overall program return on investment', '0.0%'],
+    ['Total 12M Activations (Est.)', 2815, 4695, 6572, 'Projected newly activated business accounts', '#,##0'],
+    ['Total 12M Cost (Est.)', 1306572, 1307627, 1309286, 'Sum of token fees, cloud hosting, and fixed platform overhead', '₹#,##0'],
+    ['12M In-Period Revenue (Est.)', 422859, 1475508, 3655781, 'Recognized in-period cash flow over 12 months', '₹#,##0'],
+    ['Exit ARR Run Rate (M12 ARR)', 755748, 2627124, 6441852, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.27 Lakh Base)', '₹#,##0'],
+    ['Exit Net Modeled Benefit (Est.)', -550824, 1319497, 5132566, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹13.19 Lakh Base)', '₹#,##0'],
+    ['Exit Contribution Margin %', -0.729, 0.502, 0.797, 'Overall program return on investment (50.2% Base, 79.7% Optimistic)', '0.0%'],
   ];
 
   let scenRowIdx = 6;
@@ -682,11 +682,11 @@ async function createFinancialModel() {
   scenRowIdx++;
 
   const sensData = [
-    ['15% (Conservative)', -450000, -120000, 210000, 540000],
-    ['20%', -210000, 240000, 690000, 1140000],
-    ['25% (Base Model)', 30000, 650000, 1282000, 1910000],
-    ['30%', 270000, 1060000, 1850000, 2640000],
-    ['35% (Optimistic)', 510000, 1470000, 2430000, 3390000],
+    ['15% (Conservative)', -551175, -119319, 240561, 672417],
+    ['20%', -299611, 240209, 816017, 1319849],
+    ['25% (Base Model)', 23929, 671713, 1319497, 1967281],
+    ['30%', 239506, 1067230, 1822978, 2650702],
+    ['35% (Optimistic)', 563047, 1462747, 2362447, 3334123],
   ];
 
   for (const [label, v1, v2, v3, v4] of sensData) {
@@ -799,9 +799,9 @@ async function createFinancialModel() {
 
   const hurdleAuditData = [
     ['Standard SaaS Target Margin Threshold', '75.0%', 'Benchmark hurdle rate for mature SaaS software features', '0.0%'],
-    ['Base Case Modeled Exit Margin (ARR)', '49.3%', "Derived from 'Revenue and Margin'!E30 (Net Benefit / Exit ARR)", '0.0%'],
-    ['Audit Check Status', 'FLAG: BELOW 75% TARGET (49.3%)', 'Honest audit trigger: Base case does not clear the 75% hurdle', '@'],
-    ['Audit Explanation & Commercial Context', 'Year 1 base case includes ₹25,000/mo fixed infrastructure and ₹15/account cloud hosting across 5,000 accounts. The 75% hurdle is attained under Optimistic scale (70.4%–78.0%) or Year 2 steady state as retained customer cohorts compound.', 'Strategic justification for audit trigger', '@'],
+    ['Base Case Modeled Exit Margin (ARR)', '50.2%', "Derived from 'Revenue and Margin'!E30 (Net Benefit / Exit ARR)", '0.0%'],
+    ['Audit Check Status', 'FLAG: BELOW 75% TARGET (50.2%)', 'Honest audit trigger: Base case (50.2%) does not clear the 75% hurdle', '@'],
+    ['Audit Explanation & Commercial Context', 'Year 1 base case absorbs ₹25,000/mo fixed overhead (₹3.00L) and ₹15/account hosting (₹10.06L) across all 5,000 accounts before cohort compounding matures. The 75% hurdle is achieved under Optimistic scale (79.7%) or Year 2 steady state.', 'Strategic justification for audit trigger', '@'],
   ];
 
   let hRowIdx = 22;
@@ -857,13 +857,15 @@ async function createFinancialModel() {
   }
 
   const sourcesData = [
-    ['OpenAI GPT-4o-mini Input Tokens', '$0.150 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '12-Oct-2026', 'Official public pay-as-you-go pricing tier'],
-    ['OpenAI GPT-4o-mini Output Tokens', '$0.600 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '12-Oct-2026', 'Official public pay-as-you-go pricing tier'],
-    ['USD / INR Foreign Exchange Rate', '₹84.00 per USD', 'Market Reference / Editable Assumption', 'INR', '12-Oct-2026', 'Editable illustrative conversion assumption (not a fixed currency peg)'],
-    ['Baseline Active Businesses', '5,000 businesses', 'Cheerio Product Intern Take-Home Brief', 'Accounts', '12-Oct-2026', 'Assignment specification starting universe'],
-    ['Cheerio Monthly Plan ARPU', '₹2,999 / month', 'Cheerio Growth Tier Public Plan Matrix', 'INR', '12-Oct-2026', 'Mid-tier plan for D2C brands utilizing WhatsApp + automation'],
-    ['Baseline Monthly Churn Rate', '5.0% / month', 'B2B SaaS D2C Industry Benchmark (ProfitWell)', 'Percent', '12-Oct-2026', 'Standard SMB SaaS benchmark prior to guided feature activation'],
-    ['Hypothesized Retention Lift', '+2.0 pp (to 3.0% churn)', 'Product Strategy Hypothesis', 'Percent', '12-Oct-2026', 'Subject to pre-rollout 2-week baseline measurement period'],
+    ['OpenAI GPT-4o-mini Input Tokens', '$0.150 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '13-Oct-2026', 'Official public pay-as-you-go pricing tier ($0.15/1M input)'],
+    ['OpenAI GPT-4o-mini Output Tokens', '$0.600 per 1M tokens', 'https://developers.openai.com/api/docs/models/gpt-4o-mini', 'USD', '13-Oct-2026', 'Official public pay-as-you-go pricing tier ($0.60/1M output)'],
+    ['USD / INR Foreign Exchange Rate', '₹84.00 per USD', 'Market Reference / Editable Assumption', 'INR', '13-Oct-2026', 'Editable illustrative conversion assumption (not a fixed currency peg)'],
+    ['AI Call Population Rationale', '4,695 newly activated businesses', 'Adoption Model!F (New Activations)', 'Accounts', '13-Oct-2026', '18 setup & testing calls/merchant during onboarding = 84,510 annual calls = ₹1,757 spend'],
+    ['Variable Cloud Hosting Sizing', '67,058 account-months', 'Adoption Model!C (Active Businesses)', 'INR', '13-Oct-2026', '₹15.00/acct-mo across 5,000 to 6,217 compounding active businesses = ₹10,05,870'],
+    ['Baseline Active Businesses', '5,000 businesses', 'Cheerio Product Intern Take-Home Brief', 'Accounts', '13-Oct-2026', 'Assignment specification starting universe (5,000 in M1 to 6,217 in M12)'],
+    ['Cheerio Monthly Plan ARPU', '₹2,999 / month', 'Cheerio Growth Tier Public Plan Matrix', 'INR', '13-Oct-2026', 'Mid-tier plan for D2C brands utilizing WhatsApp + automation'],
+    ['Baseline Monthly Churn Rate', '5.0% / month', 'B2B SaaS D2C Industry Benchmark (ProfitWell)', 'Percent', '13-Oct-2026', 'Standard SMB SaaS benchmark prior to guided feature activation'],
+    ['Hypothesized Retention Lift', '+2.0 pp (to 3.0% churn)', 'Product Strategy Hypothesis', 'Percent', '13-Oct-2026', 'Subject to pre-rollout 2-week baseline measurement period'],
   ];
 
   let srcRowIdx = 5;
