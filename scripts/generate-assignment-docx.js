@@ -309,8 +309,8 @@ async function generateDocx() {
               new TableRow({
                 children: [
                   createCell('Active Accounts (2% MoM growth)', false, 32, true),
-                  createCell('5,584 accounts', false, 22),
-                  createCell('5,000 to 6,242', false, 22),
+                  createCell('5,588 accounts', false, 22),
+                  createCell('5,000 to 6,217', false, 22),
                   createCell('Starting Cheerio active business universe', false, 24),
                 ],
               }),
@@ -324,10 +324,10 @@ async function generateDocx() {
               }),
               new TableRow({
                 children: [
-                  createCell('Total AI & Infrastructure Cost', false, 32, true),
+                  createCell('Total Year-1 Realized Cost', false, 32, true),
                   createCell('₹1,08,969 / mo avg', false, 22),
                   createCell('₹13,07,627 / yr', false, 22),
-                  createCell('OpenAI GPT-4o-mini + hosting + overhead', false, 24),
+                  createCell('Token fees (₹1.7k) + hosting (₹10.06L) + fixed (₹3L)', false, 24),
                 ],
               }),
               new TableRow({
@@ -335,7 +335,7 @@ async function generateDocx() {
                   createCell('Cost Per Feature Activation', false, 32, true),
                   createCell('₹279 / activation', false, 22),
                   createCell('₹279 average', false, 22),
-                  createCell('Total program cost divided by activations', false, 24),
+                  createCell('Year-1 realized cost divided by activations', false, 24),
                 ],
               }),
               new TableRow({
@@ -364,24 +364,32 @@ async function generateDocx() {
               }),
               new TableRow({
                 children: [
-                  createCell('Net Program Benefit (Exit ARR)', false, 32, true),
-                  createCell('₹1,09,958 / mo avg', false, 22),
-                  createCell('₹13,19,497 / yr', false, 22),
-                  createCell('Exit ARR minus total annual program cost', false, 24),
+                  createCell('Annualized M12 Operating Cost', false, 32, true),
+                  createCell('₹1,18,418 / mo exit', false, 22),
+                  createCell('₹14,21,016 / yr exit', false, 24),
+                  createCell('Fixed (₹25k) + M12 hosting (₹93k) + AI (₹163) × 12', false, 22),
+                ],
+              }),
+              new TableRow({
+                children: [
+                  createCell('Exit Net Annualized Benefit', false, 32, true),
+                  createCell('₹1,00,509 / mo net', false, 22),
+                  createCell('₹12,06,108 / yr', false, 22),
+                  createCell('Exit ARR (₹26.27L) minus Annualized M12 Cost (₹14.21L)', false, 24),
                 ],
               }),
               new TableRow({
                 children: [
                   createCell('Contribution Margin (Exit / In-Period)', false, 32, true),
-                  createCell('50.2% exit ARR', false, 22),
+                  createCell('45.9% exit ARR', false, 22),
                   createCell('11.4% in-period', false, 22),
-                  createCell('Base 50.2% flags 75% SaaS hurdle; hits 79.7% in opt.', false, 24),
+                  createCell('Base 45.9% flags 75% SaaS hurdle; hits 77.9% in opt.', false, 24),
                 ],
               }),
             ],
           }),
 
-          createPara('Methodology & Audit Notes: Revenue is modeled strictly on expected value (Adopters × +2.0 pp lift × ₹2,999 ARPU). Distinguishes in-period cash flow (₹14,75,508) from Month 12 Exit ARR (₹26,27,124). 75% SaaS hurdle flags Year 1 base case (50.2%) due to fixed setup overhead; cleared at scale (79.7%) or Y2.', true),
+          createPara('Methodology & Hosting Attribution: Retention revenue is modeled on expected value (Adopters × +2.0 pp lift × ₹2,999 ARPU), keeping Year-1 in-period cash flow (₹14.76L recognized, ₹13.08L realized cost, +₹1.68L net, 11.4% margin) distinct from Exit Run-Rate ARR (₹26.27L) and Annualized M12 Cost (₹14.21L; ₹12.06L net, 45.9% margin). Hosting Attribution: Conservative base model allocates full platform hosting (₹10.06L) across all 67,058 account-months, triggering the 75% SaaS hurdle (45.9%). Under incremental feature attribution (~₹4.75L cost), exit margin exceeds 80%. Platform hosting must not be double-counted against WhatsApp messaging P&Ls.', true),
 
           createHeading2('4.2 AI Token Economics & Provider Pricing Benchmark'),
           createBullet('Model Selected:', 'OpenAI GPT-4o-mini (Official docs verified: $0.150/1M input, $0.600/1M output; editable illustrative conversion assumption of ₹84.00/USD, not a fixed currency peg; URL: https://developers.openai.com/api/docs/models/gpt-4o-mini).'),

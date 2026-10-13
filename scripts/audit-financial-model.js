@@ -43,8 +43,8 @@ async function auditModel() {
     console.log(`  Col ${c} (${colName}): formula=${JSON.stringify(cell.formula || cell.value)}`);
   }
 
-  console.log('\n--- REVENUE & MARGIN EXECUTIVE RECONCILIATION BOX (ROWS 22-30) ---');
-  for (let r = 22; r <= 30; r++) {
+  console.log('\n--- REVENUE & MARGIN EXECUTIVE RECONCILIATION BOX (ROWS 22-32) ---');
+  for (let r = 22; r <= 32; r++) {
     const row = wsRev.getRow(r);
     const metric = row.getCell(2).value;
     const val = row.getCell(5).value;
@@ -54,8 +54,8 @@ async function auditModel() {
 
   // Scenarios Table
   const wsScen = wb.getWorksheet('Scenarios');
-  console.log('\n--- SCENARIOS TABLE (ROWS 6-14) ---');
-  for (let r = 6; r <= 14; r++) {
+  console.log('\n--- SCENARIOS TABLE (ROWS 6-18) ---');
+  for (let r = 6; r <= 18; r++) {
     const row = wsScen.getRow(r);
     const driver = row.getCell(2).value;
     const cVal = row.getCell(3).value;

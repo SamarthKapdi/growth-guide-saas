@@ -109,15 +109,16 @@ Cheerio Growth Guide (*"Your next best growth move"*) is an embedded activation 
 | **Recommendation Reach (70%)** | 3,912 accounts / mo | 46,941 exposures | Active accounts exposed to Growth Guide |
 | **Engaged Businesses (40%)** | 1,565 accounts / mo | 18,776 engagements | Merchants interacting with recommendations |
 | **New Feature Activations (25%)** | 391 accounts / mo avg | 4,695 activations | Merchants completing setup wizards |
-| **Total AI & Infrastructure Cost** | ₹1,08,969 / mo avg | ₹13,07,627 / year | Token fees (₹1.7k) + hosting (₹10.06L) + fixed (₹3.00L) |
-| **Cost Per Feature Activation** | ₹279 / activation | ₹279 average | Total program cost divided by activations (₹13.08L / 4,695) |
+| **Total Year-1 Realized Cost** | ₹1,08,969 / mo avg | ₹13,07,627 / year | Token fees (₹1.7k) + hosting (₹10.06L) + fixed (₹3.00L) |
+| **Cost Per Feature Activation** | ₹279 / activation | ₹279 average | Year-1 realized cost divided by activations (₹13.08L / 4,695) |
 | **Active Retained Accounts** | 73 exit accounts | 94 cohort-months | Adopting accounts × +2.0 pp lift with 5% decay |
 | **In-Period Recognized Revenue** | ₹1,22,959 / mo avg | ₹14,75,508 / year | Sum of customer-months recognized (no double counting) |
 | **Month 12 Exit ARR Run Rate** | ₹2,18,927 / mo exit | ₹26,27,124 / year exit | 73 active retained accounts × ₹2,999 × 12 months (~₹26.27L) |
-| **Net Modeled Benefit (Exit ARR)** | **₹1,09,958 / mo avg** | **₹13,19,497 / year** | **Exit ARR minus total annual program cost (~₹13.19L)** |
-| **Contribution Margin (Exit / In-Period)** | **50.2% exit ARR** | **11.4% in-period** | **Base 50.2% flags 75% SaaS hurdle; hits 79.7% in opt.** |
+| **Annualized M12 Operating Cost** | ₹1,18,418 / mo exit | ₹14,21,016 / year exit | Fixed (₹25k) + M12 hosting (₹93k) + AI (₹163) × 12 (~₹14.21L) |
+| **Exit Net Annualized Benefit** | **₹1,00,509 / mo net** | **₹12,06,108 / year** | **Exit ARR (₹26.27L) minus Annualized M12 Cost (₹14.21L)** |
+| **Contribution Margin (Exit / In-Period)** | **45.9% exit ARR** | **11.4% in-period** | **Base 45.9% flags 75% SaaS hurdle; hits 77.9% opt. or >80% incremental** |
 
-*Methodology & Audit Notes: Retention revenue is calculated strictly on an expected-value basis (`Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU`). Distinguishes in-period recognized cash flow (₹14,75,508) from Month 12 Exit ARR run rate (₹26,27,124). 75% standard SaaS hurdle flags Year 1 base case (50.2%) due to fixed setup overhead; cleared at scale (79.7%) or Year 2.*
+*Methodology & Hosting Attribution Notes: Retention revenue is calculated strictly on an expected-value basis (`Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU`), keeping Year-1 in-period recognized cash flow (₹14,75,508 recognized, ₹13,07,627 realized cost, +₹1,67,881 net benefit, 11.4% margin) distinct from Exit Run-Rate ARR (₹26,27,124) and Annualized M12 Operating Cost (₹14,21,016; net exit benefit ₹12,06,108, 45.9% margin). Hosting Attribution: The conservative base model allocates full-platform hosting (₹10,05,870) across all 67,058 account-months, triggering the 75% SaaS hurdle (45.9%). Under incremental feature cost attribution (~₹4.75L incremental cost), exit margin exceeds 80%. Platform hosting must not be double-counted against baseline WhatsApp campaign P&Ls.*
 
 ### 4.2 AI Contribution & Token Sizing Economics
 * **Model Selected:** **OpenAI GPT-4o-mini** (Standard Pay-As-You-Go API Tier).

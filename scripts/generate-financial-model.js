@@ -67,6 +67,8 @@ async function createFinancialModel() {
     ['Expected-Value Basis', 'Retention revenue = Adopting Businesses × Hypothesized Retention Lift in pp × Monthly Plan ARPU.'],
     ['No Double-Counting', 'Revenue is tied strictly to newly retained cohorts without compounding previously credited gains.'],
     ['Illustrative Nature', 'All retention lifts (+2.0 pp baseline) represent testable hypotheses subject to 2-week baseline validation.'],
+    ['Run-Rate Annualization', 'Exit ARR (₹26,27,124) is compared against Annualized Month-12 Cost (₹14,21,016), yielding Exit Net Benefit ₹12,06,108 (45.9% margin), distinct from Year-1 in-period cash flow (+₹1,67,881 net, 11.4% margin).'],
+    ['Hosting Cost Attribution', 'Base model allocates full-platform cloud hosting (₹10,05,870) across all 67,058 account-months as a conservative stress test. Incremental feature-only allocation yields >80% margin. Platform hosting must not be double-counted against baseline WhatsApp campaign P&Ls.'],
   ];
 
   let rIdx = 5;
@@ -559,20 +561,22 @@ async function createFinancialModel() {
 
   // Executive Reconciliation Box in wsRev
   wsRev.mergeCells('B21:K21');
-  wsRev.getCell('B21').value = 'EXECUTIVE RECONCILIATION: IN-PERIOD CASH FLOW VS. EXIT ANNUALIZED RUN RATE (ARR)';
+  wsRev.getCell('B21').value = 'EXECUTIVE RECONCILIATION: IN-PERIOD CASH FLOW VS. EXIT RUN-RATE OPERATING ECONOMICS';
   wsRev.getCell('B21').font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
   wsRev.getCell('B21').fill = subHeaderFill;
 
   const reconRows = [
     ['12-Month In-Period Recognized Revenue', { formula: 'SUM(G6:G17)' }, 'Sum of customer-months recognized across Months 1–12 (₹14,75,508)', '₹#,##0'],
-    ['12-Month Total Program Cost', { formula: 'SUM(I6:I17)' }, 'Token fees (₹1,757) + Variable cloud hosting (₹10,05,870) + Fixed infra (₹3,00,000)', '₹#,##0'],
-    ['12-Month In-Period Net Benefit', { formula: 'SUM(J6:J17)' }, 'Recognized In-Period Revenue minus Total Cost (+₹1,67,881)', '₹#,##0'],
+    ['12-Month Total Realized Program Cost', { formula: 'SUM(I6:I17)' }, 'Token fees (₹1,757) + Variable cloud hosting (₹10,05,870) + Fixed infra (₹3,00,000)', '₹#,##0'],
+    ['12-Month In-Period Net Realized Benefit', { formula: 'SUM(J6:J17)' }, 'Recognized In-Period Revenue minus Total Realized Cost (+₹1,67,881)', '₹#,##0'],
     ['12-Month In-Period Margin %', { formula: 'K18' }, 'In-Period Net Benefit divided by In-Period Revenue (11.4%)', '0.0%'],
     ['Month 12 Exit Active Retained Accounts', { formula: 'F17' }, 'Cumulative active retained customer accounts at Year 1 exit (73 accounts)', '#,##0'],
     ['Month 12 Exit Monthly Run Rate (MRR)', { formula: 'G17' }, 'Active Retained Accounts (F17) × Monthly Plan ARPU (₹2,18,927 / mo)', '₹#,##0'],
     ['Month 12 Exit Annualized Run Rate (ARR)', { formula: 'G17 * 12' }, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26,27,124, ~₹26.27 Lakh)', '₹#,##0'],
-    ['Exit Net Modeled Annual Benefit', { formula: '(G17 * 12) - SUM(I6:I17)' }, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹13,19,497, ~₹13.19 Lakh)', '₹#,##0'],
-    ['Exit Annualized Contribution Margin', { formula: '((G17 * 12) - SUM(I6:I17)) / (G17 * 12)' }, 'Exit Net Benefit divided by Exit ARR (Reconciles to 50.2%)', '0.0%'],
+    ['Month 12 Recurring Monthly Operating Cost', { formula: "'AI and Infrastructure Cost'!K17" }, "Fixed (₹25k) + M12 Hosting (6,217 accts × ₹15 = ₹93,255) + M12 AI (₹163) = ₹1,18,418 / mo", '₹#,##0'],
+    ['Annualized Month-12 Operating Cost', { formula: "'AI and Infrastructure Cost'!K17 * 12" }, 'Month 12 Monthly Operating Cost × 12 months (Reconciles to ₹14,21,016 / yr)', '₹#,##0'],
+    ['Exit Net Annualized Benefit (Run Rate)', { formula: "(G17 * 12) - ('AI and Infrastructure Cost'!K17 * 12)" }, 'Exit ARR (E28) minus Annualized Month-12 Cost (E30) = ₹12,06,108 / yr', '₹#,##0'],
+    ['Exit Annualized Contribution Margin', { formula: "((G17 * 12) - ('AI and Infrastructure Cost'!K17 * 12)) / (G17 * 12)" }, 'Exit Net Benefit (E31) divided by Exit ARR (E28) = 45.9% (matches M12 margin J17/G17)', '0.0%'],
   ];
 
   let rBoxIdx = 22;
@@ -630,11 +634,15 @@ async function createFinancialModel() {
     ['Retention Improvement (pp)', 0.010, 0.020, 0.035, 'Observed drop in monthly business churn rate', '0.0%'],
     ['Avg AI Interactions / Mo', 12, 18, 25, 'Depth of chatbot and automation customization', '#,##0'],
     ['Total 12M Activations (Est.)', 2815, 4695, 6572, 'Projected newly activated business accounts', '#,##0'],
-    ['Total 12M Cost (Est.)', 1306572, 1307627, 1309286, 'Sum of token fees, cloud hosting, and fixed platform overhead', '₹#,##0'],
+    ['Total Year-1 Realized Cost (Est.)', 1306572, 1307627, 1309286, 'Sum of token fees, cloud hosting, and fixed platform overhead', '₹#,##0'],
+    ['Month 12 Monthly Operating Cost', 118320, 118418, 118572, 'M12 operating cost (fixed ₹25k + hosting + M12 AI tokens)', '₹#,##0'],
+    ['Annualized Month-12 Operating Cost', 1419841, 1421016, 1422858, 'Month-12 monthly cost × 12 months (Reconciles to ₹14.21 Lakh Base)', '₹#,##0'],
     ['12M In-Period Revenue (Est.)', 422859, 1475508, 3655781, 'Recognized in-period cash flow over 12 months', '₹#,##0'],
+    ['12M In-Period Net Benefit (Est.)', -883713, 167881, 2346495, 'In-period revenue minus Year-1 realized program cost', '₹#,##0'],
+    ['12M In-Period Margin %', -2.090, 0.114, 0.642, 'In-period net benefit / in-period revenue (11.4% Base)', '0.0%'],
     ['Exit ARR Run Rate (M12 ARR)', 755748, 2627124, 6441852, 'Exit Monthly Run Rate × 12 months (Reconciles to ₹26.27 Lakh Base)', '₹#,##0'],
-    ['Exit Net Modeled Benefit (Est.)', -550824, 1319497, 5132566, 'Exit ARR minus Annualized Program Cost (Reconciles to ₹13.19 Lakh Base)', '₹#,##0'],
-    ['Exit Contribution Margin %', -0.729, 0.502, 0.797, 'Overall program return on investment (50.2% Base, 79.7% Optimistic)', '0.0%'],
+    ['Exit Net Annualized Benefit (Est.)', -664093, 1206108, 5018994, 'Exit ARR minus Annualized Month-12 Cost (Reconciles to ₹12.06 Lakh Base)', '₹#,##0'],
+    ['Exit Contribution Margin %', -0.879, 0.459, 0.779, 'Exit Net Benefit / Exit ARR (45.9% Base, 77.9% Optimistic)', '0.0%'],
   ];
 
   let scenRowIdx = 6;
@@ -668,7 +676,7 @@ async function createFinancialModel() {
   // Sensitivity Matrix Header
   scenRowIdx += 2;
   wsScen.mergeCells(`B${scenRowIdx}:F${scenRowIdx}`);
-  wsScen.getCell(`B${scenRowIdx}`).value = 'SENSITIVITY MATRIX: 12-Month Exit Net Benefit (₹) by Activation Rate & Retention Lift';
+  wsScen.getCell(`B${scenRowIdx}`).value = 'SENSITIVITY MATRIX: 12-Month Exit Annualized Net Benefit (₹) by Activation Rate & Retention Lift';
   wsScen.getCell(`B${scenRowIdx}`).font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
   wsScen.getCell(`B${scenRowIdx}`).fill = subHeaderFill;
   scenRowIdx++;
@@ -682,11 +690,11 @@ async function createFinancialModel() {
   scenRowIdx++;
 
   const sensData = [
-    ['15% (Conservative)', -551175, -119319, 240561, 672417],
-    ['20%', -299611, 240209, 816017, 1319849],
-    ['25% (Base Model)', 23929, 671713, 1319497, 1967281],
-    ['30%', 239506, 1067230, 1822978, 2650702],
-    ['35% (Optimistic)', 563047, 1462747, 2362447, 3334123],
+    ['15% (Conservative)', -664484, -232628, 127252, 559108],
+    ['20%', -412959, 126861, 702669, 1206501],
+    ['25% (Base Model)', -89457, 558327, 1206108, 1853895],
+    ['30%', 126080, 953804, 1709552, 2537276],
+    ['35% (Optimistic)', 449581, 1349281, 2248981, 3220657],
   ];
 
   for (const [label, v1, v2, v3, v4] of sensData) {
@@ -799,9 +807,9 @@ async function createFinancialModel() {
 
   const hurdleAuditData = [
     ['Standard SaaS Target Margin Threshold', '75.0%', 'Benchmark hurdle rate for mature SaaS software features', '0.0%'],
-    ['Base Case Modeled Exit Margin (ARR)', '50.2%', "Derived from 'Revenue and Margin'!E30 (Net Benefit / Exit ARR)", '0.0%'],
-    ['Audit Check Status', 'FLAG: BELOW 75% TARGET (50.2%)', 'Honest audit trigger: Base case (50.2%) does not clear the 75% hurdle', '@'],
-    ['Audit Explanation & Commercial Context', 'Year 1 base case absorbs ₹25,000/mo fixed overhead (₹3.00L) and ₹15/account hosting (₹10.06L) across all 5,000 accounts before cohort compounding matures. The 75% hurdle is achieved under Optimistic scale (79.7%) or Year 2 steady state.', 'Strategic justification for audit trigger', '@'],
+    ['Base Case Modeled Exit Margin (ARR)', '45.9%', "Derived from 'Revenue and Margin'!E32 (Exit Net Benefit / Exit ARR)", '0.0%'],
+    ['Audit Check Status', 'FLAG: BELOW 75% TARGET (45.9%)', 'Honest audit trigger: Base case (45.9%) does not clear the 75% hurdle', '@'],
+    ['Audit Explanation & Commercial Context', 'Year 1 base case absorbs ₹25,000/mo fixed overhead (₹3.00L) and ₹15/account hosting (₹10.06L) across all 5,000–6,217 accounts before cohort compounding matures. Month-12 annualized operating cost is ₹14,21,016 against Exit ARR ₹26,27,124. The 75% hurdle is achieved under Optimistic scale (77.9%), in Year 2 steady state, or under incremental feature cost attribution (>80%).', 'Strategic justification for audit trigger', '@'],
   ];
 
   let hRowIdx = 22;

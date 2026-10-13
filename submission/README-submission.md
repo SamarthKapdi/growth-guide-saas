@@ -48,10 +48,13 @@ The Word document was compiled using the `docx` library with calibrated 0.5-inch
     * Full Year Activations: 4,695 accounts (350 in M1 to 435 in M12)
     * Full Year AI & Infra Cost: ₹13,07,627 (Average cost per activation: ₹279)
     * In-Period Recognized Revenue: ₹14,75,508 across 492 customer-months (~₹14.76 Lakh)
+    * In-Period Realized Net Benefit: **+₹1,67,881** (11.4% in-period margin)
     * Month 12 Exit MRR: ₹2,18,927 / month (73 active retained businesses at ₹2,999 ARPU)
     * Month 12 Exit ARR Run Rate: ₹26,27,124 / year (~₹26.27 Lakh, ~₹26.0 Lakh)
-    * Net Modeled Benefit (Exit ARR): **₹13,19,497 / year** (50.2% contribution margin)
-    * In-Period Net Benefit: **+₹1,67,881** (11.4% in-period margin)
+    * Month 12 Recurring Operating Cost: ₹1,18,418 / month (Fixed ₹25k + Hosting ₹93,255 + AI ₹163)
+    * Annualized Month-12 Operating Cost: ₹14,21,016 / year (`'AI and Infrastructure Cost'!K17 * 12`)
+    * Exit Net Annualized Benefit (Run Rate): **₹12,06,108 / year** (`(G17 * 12) - (K17 * 12)`)
+    * Exit Annualized Contribution Margin: **45.9%** (matches M12 monthly margin `J17 / G17` = 45.9%)
   * *AI Token Economics:* OpenAI GPT-4o-mini official verified pricing ($0.150/1M input, $0.600/1M output, ₹84.00/USD peg; ₹0.02079 blended cost per interaction; ₹1,757 total annual spend across 84,510 setup calls).
   * *Expected-Value Disclaimer:* Explicitly models retention revenue on an expected-value basis without double-counting.
   * *Risk Matrix:* Recommendation fatigue suppression, hallucination guardrails, and WhatsApp template compliance.
@@ -82,17 +85,20 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
    * Active Retained Cohort Decay: `= ROUND(Prior Active * (1 - Churn 5%), 0) + New Retained`
    * Monthly Recognized Cash Flow: `= Active Retained Accounts * ₹2,999 ARPU`
    * Full Year In-Period Cash Flow Recognized: **₹14,75,508 (~₹14.76 Lakh)** across 492 customer-months
-   * Month 12 Exit Active Retained Accounts: **73 accounts**
-   * Month 12 Exit MRR: **₹2,18,927 / month**
-   * Month 12 Exit ARR Run Rate: **₹26,27,124 (~₹26.27 Lakh, ~₹26.0 Lakh / year)**
-   * Total Program Cost: **₹13,07,627 / year**
-   * Net Annualized Benefit (Exit ARR basis): **₹13,19,497 / year** (Exit Contribution Margin: **50.2%**)
+   * Full Year Realized Program Cost: **₹13,07,627 / year**
    * In-Period Year 1 Net Benefit: **+₹1,67,881 (~₹1.68 Lakh)** (In-Period Margin: **11.4%**)
-6. **`Scenarios`**: Side-by-side comparison of Conservative (15% activation, 1.0 pp lift, -₹5.5L exit net), Base (25% activation, 2.0 pp lift, +₹13.2L exit net, 50.2% margin), and Optimistic (35% activation, 3.5 pp lift, +₹51.3L exit net, 79.7% margin) scenarios, plus a two-dimensional sensitivity grid.
+   * Month 12 Exit Active Retained Accounts: **73 accounts** (`F17`)
+   * Month 12 Exit MRR: **₹2,18,927 / month** (`G17`)
+   * Month 12 Exit ARR Run Rate: **₹26,27,124 (~₹26.27 Lakh, ~₹26.0 Lakh / year)** (`G17 * 12`)
+   * Month 12 Monthly Operating Cost: **₹1,18,418 / month** (`'AI and Infrastructure Cost'!K17`)
+   * Annualized Month-12 Operating Cost: **₹14,21,016 / year** (`'AI and Infrastructure Cost'!K17 * 12`)
+   * Exit Net Annualized Benefit (Run Rate): **₹12,06,108 / year** (`(G17 * 12) - (K17 * 12)`)
+   * Exit Annualized Contribution Margin: **45.9%** (matches M12 monthly margin `J17 / G17` = 45.9%)
+6. **`Scenarios`**: Side-by-side comparison of Conservative (15% activation, 1.0 pp lift, -₹6.64L exit net benefit / -87.9% margin), Base (25% activation, 2.0 pp lift, +₹12.06L exit net benefit / 45.9% margin), and Optimistic (35% activation, 3.5 pp lift, +₹50.19L exit net benefit / 77.9% margin) scenarios, plus a two-dimensional sensitivity grid.
 7. **`Monthly Audit`**:
    * Funnel Integrity: `Reach ≤ Active Accounts`, `Engaged ≤ Reached`, `Activated ≤ Engaged` all **PASS** across all 12 months.
    * Positive Monthly Cash Flow: Ramp Phase M1–M5; PASS from M6 onward.
-   * Hurdle Rate Check: Standard SaaS 75% margin threshold flags `ALERT: BELOW 75% TARGET (50.2%)` for Base Case. Honest audit justification: Year 1 bears ₹25,000/mo fixed infrastructure (₹3.00L) and ₹15/account cloud hosting (₹10.06L) across 5,000 baseline accounts before cohort compounding matures. Hurdle is achieved under Optimistic scale (79.7%) or Year 2 steady state.
+   * Hurdle Rate Check: Standard SaaS 75% margin threshold flags `FLAG: BELOW 75% TARGET (45.9%)` for Base Case. Honest audit justification: Year 1 base case absorbs ₹25,000/mo fixed infrastructure (₹3.00L) and ₹15/account cloud hosting (₹10.06L) across 5,000–6,217 accounts before cohort compounding matures. Month-12 annualized operating cost is ₹14,21,016 against Exit ARR ₹26,27,124. The 75% hurdle is achieved under Optimistic scale (77.9%), Year 2 steady state, or under incremental feature cost attribution (>80%).
 8. **`Sources`**: Verified reference URLs for OpenAI official API pricing (`https://developers.openai.com/api/docs/models/gpt-4o-mini`), editable conversion assumption notes, industry SaaS churn benchmarks, and model disclaimers.
 
 ---
@@ -113,7 +119,7 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
   $$\text{Cumulative Activations} = \sum_{m=1}^{12} \text{Activations}_m = \mathbf{4,695 \text{ activations}}$$
   The 495-activation difference ($4,695 - 4,200$) represents organic business customer growth compounding over 12 months. (The earlier draft reference to 4,691 was a typo that omitted rounding in intermediate steps; the exact sum of the monthly figures is 4,695).
 
-#### 2. Reconciliation of ₹26 Lakh Revenue & The Five Core Metrics
+#### 2. Reconciliation of Revenue & The Five Core Metrics
 * **Month-by-Month Retained Cohort Dynamic:**
   In each month $m$, adopting merchants generate new saved accounts: $\text{New Retained}_m = \text{ROUND}(\text{Activations}_m \times 2.0\%)$.
   Active surviving retained accounts compound with 5.0% baseline monthly churn:
@@ -122,27 +128,52 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
   * Month 6: 39 accounts
   * Month 12: 73 active surviving accounts
 * **The Five Distinct Financial Metrics (No Double-Counting):**
-  1. **Year-One In-Period Revenue (SUM G6:G17):**
+  1. **Year-One In-Period Recognized Revenue (`SUM(G6:G17)`):**
      $$\sum_{m=1}^{12} (\text{Active Retained}_m \times ₹2,999) = \mathbf{₹14,75,508} \quad (\approx ₹14.76 \text{ Lakh})$$
      Represents the cash recognized across 492 customer-months billed in Year 1.
-  2. **Month-12 Exit Monthly Recurring Revenue (MRR):**
-     $$73 \text{ active retained accounts} \times ₹2,999 = \mathbf{₹2,18,927 / \text{month}}$$
-  3. **Month-12 Exit Annualized Recurring Revenue (ARR):**
-     $$₹2,18,927 \times 12 = \mathbf{₹26,27,124 / \text{year}} \quad (\approx ₹26.27 \text{ Lakh, or } \approx ₹26.0 \text{ Lakh})$$
-  4. **Year-One In-Period Net Benefit:**
-     $$₹14,75,508 - ₹13,07,627 = \mathbf{+₹1,67,881} \quad (\text{In-Period Margin: } \mathbf{11.4\%})$$
+  2. **Year-One Realized Costs & Net Benefit (`SUM(I6:I17)` & `SUM(J6:J17)`):**
+     $$\text{Realized Cost} = ₹3,00,000 \text{ (fixed)} + ₹10,05,870 \text{ (hosting)} + ₹1,757 \text{ (AI)} = \mathbf{₹13,07,627}$$
+     $$\text{In-Period Net Benefit} = ₹14,75,508 - ₹13,07,627 = \mathbf{+₹1,67,881} \quad (\text{In-Period Margin: } \mathbf{11.4\%})$$
      Confirms the program is cash-flow positive within Year 1 while absorbing all fixed setup costs.
-  5. **Exit-Run-Rate Net Benefit:**
-     $$₹26,27,124 - ₹13,07,627 = \mathbf{₹13,19,497 / \text{year}} \quad (\text{Exit Contribution Margin: } \mathbf{50.2\%})$$
-     Compares the forward-looking annualized run rate against the annual operating cost baseline.
+  3. **Month-12 Exit Monthly & Annualized Recurring Revenue (MRR / ARR):**
+     $$\text{Month 12 MRR} = 73 \text{ active retained accounts} \times ₹2,999 = \mathbf{₹2,18,927 / \text{month}} \quad (`Revenue and Margin'!G17)$$
+     $$\text{Month 12 ARR} = ₹2,18,927 \times 12 = \mathbf{₹26,27,124 / \text{year}} \quad (`Revenue and Margin'!G17 * 12)$$
+  4. **Month-12 Recurring Operating Cost & Annualized Cost:**
+     $$\text{M12 Fixed Overhead} = \mathbf{₹25,000 / \text{mo}} \quad (`Assumptions'!$C$19)$$
+     $$\text{M12 Hosting} = 6,217 \text{ accounts} \times ₹15.00 = \mathbf{₹93,255 / \text{mo}} \quad (`AI and Infrastructure Cost'!I17)$$
+     $$\text{M12 AI Tokens} = 435 \text{ activations} \times 18 \times ₹0.02079 = \mathbf{₹163 / \text{mo}} \quad (`AI and Infrastructure Cost'!H17)$$
+     $$\text{Total M12 Monthly Cost} = ₹25,000 + ₹93,255 + ₹163 = \mathbf{₹1,18,418 / \text{month}} \quad (`AI and Infrastructure Cost'!K17)$$
+     $$\text{Annualized M12 Cost} = ₹1,18,418 \times 12 = \mathbf{₹14,21,016 / \text{year}} \quad (`AI and Infrastructure Cost'!K17 * 12)$$
+  5. **Exit-Run-Rate Net Annualized Benefit & Contribution Margin:**
+     $$\text{Exit Net Benefit} = \text{Exit ARR} - \text{Annualized M12 Cost} = ₹26,27,124 - ₹14,21,016 = \mathbf{₹12,06,108 / \text{year}}$$
+     $$\text{Exit Contribution Margin} = \frac{₹12,06,108}{₹26,27,124} = \mathbf{45.9\%} \quad (\text{matches Month-12 monthly margin } J17 / G17 = 45.9\%)$$
+     Harmonizes forward-looking annualized revenue with forward-looking annualized operating costs.
 
-#### 3. Hosting Cost Reconciliation (Resolution of ₹360 Variance)
+#### 3. Hosting Cost Attribution Analysis (Full-Platform vs. Incremental Feature Cost)
+* **The Strategic Accounting Dilemma:**
+  Should the cloud hosting cost of all Cheerio active businesses (₹15/account-month across 67,058 account-months = ₹10,05,870) be burdened entirely onto Growth Guide, or should it be separated into existing platform baseline versus incremental feature costs?
+* **Treatment A: Full-Platform Allocation (Base Case in Workbook):**
+  * Growth Guide is treated as an end-to-end platform initiative, absorbing ₹10,05,870 in variable hosting and ₹3,00,000 in fixed overhead.
+  * *Result:* Year-1 in-period net benefit is +₹1,67,881 (11.4% margin); Exit ARR net benefit is ₹12,06,108 (45.9% margin).
+  * *Strategic Value:* Provides a highly conservative lower-bound stress test. It proves Growth Guide is profitable even under complete platform burden.
+* **Treatment B: Incremental Feature Cost Allocation (Managerial Alternative):**
+  * In standard SaaS product accounting, core cloud hosting (₹15/account) is already incurred by Cheerio's primary WhatsApp messaging business regardless of Growth Guide.
+  * True incremental costs created specifically by Growth Guide are:
+    1. AI token inference: ₹1,757 / year.
+    2. Incremental user state & recommendation metadata storage: ~₹1.00 / active account-month (~₹67,000 / year).
+    3. Dedicated Growth Guide staging & diagnostic sandbox overhead: ~₹4,00,000 / year.
+    4. Total incremental annual feature cost: **~₹4,75,000 / year** (M12 incremental run rate: ~₹42,000 / month = ~₹5,04,000 / year).
+  * *Result:* In-period net benefit expands to **~₹10,00,000+**; Exit ARR net benefit reaches **~₹21,23,000**, delivering an exit contribution margin of **>80%** (surpassing the 75% SaaS hurdle immediately in Year 1).
+* **Double-Counting Prevention Guardrail:**
+  If Treatment A (Full-Platform Allocation) is adopted, platform hosting must **NOT** be deducted a second time from WhatsApp messaging campaign margins in consolidated management reporting. The model's explicit documentation guarantees transparent, non-double-counted corporate attribution.
+
+#### 4. Hosting Sizing Numerical Reconciliation (Resolution of ₹360 Variance)
 * The 12 monthly active accounts are: 5,000, 5,100, 5,202, 5,306, 5,412, 5,520, 5,630, 5,743, 5,858, 5,975, 6,095, 6,217.
 * Sum of account-months: $\sum = \mathbf{67,058 \text{ account-months}}$.
 * Variable Cloud Hosting: $67,058 \times ₹15.00 = \mathbf{₹10,05,870.00}$.
 * *Resolution:* The previous draft text cited ₹10,05,510 due to an unrounded geometric sequence calculation ($5,000 \times 1.02^{m-1}$). The actual workbook formula (`= 'Adoption Model'!C{row} * 15`) evaluates to exactly ₹10,05,870, resolving the ₹360 discrepancy.
 
-#### 4. AI Cost Volume Reconciliation (Resolution of ₹12,490 Variance)
+#### 5. AI Cost Volume Reconciliation (Resolution of ₹12,490 Variance)
 * **Population Generating Calls:** Newly activated businesses completing setup wizards and testing sandbox features (`Adoption Model!F`, 4,695 total activations).
 * **Interactions Per Business:** 18 setup and testing interactions per newly activated merchant during onboarding.
 * **Annual Call Volume:** $4,695 \times 18 = \mathbf{84,510 \text{ total calls}}$ (6,300 in M1 scaling to 7,830 in M12).
@@ -156,6 +187,7 @@ The workbook contains **8 dedicated worksheets** featuring dynamic cell formulas
 * *Resolution:* The previous draft citation of ₹12,490 was a top-down budget residual ($₹13,18,000 - ₹10,05,510 - ₹3,00,000 = ₹12,490$) which implied ~600,770 calls. The bottom-up formula-driven workbook cost is verified at ₹1,757 across 84,510 calls.
 * **Total Program Cost:** $₹3,00,000 \text{ (fixed)} + ₹10,05,870 \text{ (hosting)} + ₹1,757 \text{ (AI)} = \mathbf{₹13,07,627}$.
 * **Cost Per Activation:** $₹13,07,627 / 4,695 = \mathbf{₹278.51 \approx ₹279 / \text{activation}}$.
+
 
 ---
 
@@ -304,7 +336,7 @@ To share or evaluate `submission/cheerio_growth_guide_financial_model.xlsx` in G
 3. **Verify Formula Recalculation:**
    * Click on the **`Monthly Audit`** tab.
    * Verify cell `B19` reads: `AUDIT RESULT: ALL FORMULAS, FUNNEL CONSTRAINTS AND RETENTION RULES RECONCILED (0 ERRORS)`.
-   * Check the **`Revenue and Margin`** tab: verify row 18 calculates full-year incremental revenue as `₹26,00,000` and net benefit as `₹12,82,000`.
+   * Check the **`Revenue and Margin`** tab: verify row 18 calculates In-Period Recognized Revenue as `₹14,75,508` (`G18`), Realized Program Cost as `₹13,07,627` (`I18`), and In-Period Net Benefit as `+₹1,67,881` (`J18`), while the Executive Reconciliation Box (rows 22–32) calculates Exit ARR as `₹26,27,124` (`E28`), Annualized M12 Cost as `₹14,21,016` (`E30`), and Exit Net Annualized Benefit as `₹12,06,108` (`E31`, 45.9% margin).
    * Check the **`Assumptions`** tab: verify changing cell `C10` (Reach %) or `C12` (Activation %) dynamically updates all downstream sheets.
 4. **Set Sharing Permissions for Submission:**
    * Click the **Share** button in the top right.
