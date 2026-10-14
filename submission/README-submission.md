@@ -289,14 +289,19 @@ Route (app)                              Size     First Load JS
 ## 6. Prototype Hosting & Deployment Guide
 
 ### Deployment Status
-* **Current Status:** Not publicly deployed to external cloud infrastructure (running locally on `http://localhost:3000`).
-* **Transparency Notice:** In accordance with instructions, no third-party cloud accounts were created or billed without authorization, and no fabricated public URLs are reported.
+* **Current Status:** **Active & Live** on Vercel at [https://growth-guide-saas.vercel.app/](https://growth-guide-saas.vercel.app/).
+* **Repository Link:** [https://github.com/SamarthKapdi/growth-guide-saas](https://github.com/SamarthKapdi/growth-guide-saas) (Continuous integration & deployment enabled).
 
-### Deployment Instructions (Vercel / Netlify / Node VPS)
+### Deployment Instructions & Live Demo URL
 The prototype has **zero external API keys, database credentials, or paid secrets**, making it 100% portable for instantaneous one-click deployment:
 
-#### Option A: Deploy to Vercel (Recommended for Next.js)
-1. Push the repository to GitHub:
+- 🌐 **Live Deployed Prototype:** [https://growth-guide-saas.vercel.app/](https://growth-guide-saas.vercel.app/)
+- **Hosting Platform:** Vercel (Production Build from `main` branch)
+
+#### Option A: Deployed on Vercel
+The live application is deployed directly from the GitHub repository (`https://github.com/SamarthKapdi/growth-guide-saas`):
+- Production URL: `https://growth-guide-saas.vercel.app/`
+- Build status: Automatically rebuilds and deploys on every push to `main`.
    ```bash
    git remote add origin https://github.com/<your-username>/cheerio-growth-guide.git
    git branch -M main

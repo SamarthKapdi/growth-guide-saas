@@ -11,7 +11,9 @@ Cheerio Growth Guide transforms generic feature catalogues into goal-driven, con
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-26%20Passed-brightgreen)](tests/test-runner.ts)
-[![Deployment](https://img.shields.io/badge/Live%20Demo-Deployment%20Pending-orange)](#-deployment)
+[![Deployment](https://img.shields.io/badge/Live%20Demo-growth--guide--saas.vercel.app-teal?logo=vercel)](https://growth-guide-saas.vercel.app/)
+
+> 🌐 **Live Interactive Prototype:** [https://growth-guide-saas.vercel.app/](https://growth-guide-saas.vercel.app/)
 
 ---
 
@@ -294,8 +296,10 @@ All core internship deliverables are organized in the [`submission/`](submission
 
 ## 🚀 Deployment
 
-- **Status:** **Live demo: deployment pending.**
-- The application is fully self-contained and zero-config ready for one-click deployment on platforms such as [Vercel](https://vercel.com/) or [Railway](https://railway.app/). Simply import the repository and deploy with standard Next.js defaults (`npm run build`).
+- **Live Interactive Demo:** [https://growth-guide-saas.vercel.app/](https://growth-guide-saas.vercel.app/)
+- **Hosting Platform:** [Vercel](https://vercel.com/) (Next.js App Router Edge / Serverless)
+- **Deployment Status:** **Active & Live**
+- The application is fully self-contained and zero-config ready. Any push to `main` triggers automatic continuous deployment and production releases on Vercel.
 
 ---
 

@@ -274,14 +274,11 @@ All 5 screenshot assets exist on disk in `submission/screenshots/`, verified as 
 
 ## 10. Public Deployment Status & Real URL
 
-* **Current Deployment Status:** **Local evaluation ready (`http://localhost:3000`); public cloud URL is PENDING**.
-* **Transparency Notice:** In accordance with instructions, no third-party cloud accounts were billed or created without authorization, and no fabricated external URLs are presented.
-* **One-Click Deployment Preparation:**
-  * The application has zero environment secrets, paid API keys, or private database credentials.
-  * To deploy live to Vercel:
-    1. Import the repository into [vercel.com](https://vercel.com).
-    2. Framework preset: `Next.js`; Build command: `npm run build`; Output: `.next`.
-    3. Click **Deploy** to receive a public URL in ~60 seconds.
+* **Current Deployment Status:** **Active & Live** on Vercel.
+* **Live Production URL:** [https://growth-guide-saas.vercel.app/](https://growth-guide-saas.vercel.app/)
+* **GitHub Repository:** [https://github.com/SamarthKapdi/growth-guide-saas](https://github.com/SamarthKapdi/growth-guide-saas)
+* **Hosting Platform:** Vercel (Edge / Serverless Next.js App Router). Continuous deployment configured from the `main` branch.
+* **Environment Integrity:** Fully self-contained with zero external API keys or private database credentials required. Zero-configuration deployment verified.
 
 ---
 
